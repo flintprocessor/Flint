@@ -72,7 +72,7 @@ public let cloneCommandHandler: CommandHandler = { _, _, operandValues, optionVa
             }
         } else {
             printWarning("Template already exists at \(templateFullPath.path)")
-            printWarning("Use --force(-f) option to override it.")
+            printWarning("Use --force/-f option to override")
             return
         }
     }
