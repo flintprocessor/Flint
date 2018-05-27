@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ANSIEscapeCode",
+        "repositoryURL": "https://github.com/flintbox/ANSIEscapeCode",
+        "state": {
+          "branch": null,
+          "revision": "892f5f3067ea4c029af05cb45efb3b6a3be2f838",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "Bouncer",
+        "repositoryURL": "https://github.com/flintbox/Bouncer",
+        "state": {
+          "branch": null,
+          "revision": "a24a3d616b78ed4a7756edc4999c515f3adfd0dd",
+          "version": "0.1.2"
+        }
+      },
+      {
+        "package": "Motor",
+        "repositoryURL": "https://github.com/flintbox/Motor",
+        "state": {
+          "branch": null,
+          "revision": "8a203ff30aa38ab376a8da4390eb1c3d6519054b",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "PathFinder",
+        "repositoryURL": "https://github.com/jasonnam/PathFinder",
+        "state": {
+          "branch": "develop",
+          "revision": "074f361ddfeaa916d4deef524c08e16c54a049d6",
+          "version": null
+        }
+      },
+      {
+        "package": "Work",
+        "repositoryURL": "https://github.com/flintbox/Work",
+        "state": {
+          "branch": null,
+          "revision": "dcfc835ade72e4de743b6a14d3f224ebf575eac5",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
