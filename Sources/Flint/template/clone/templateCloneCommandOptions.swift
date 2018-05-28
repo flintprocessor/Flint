@@ -1,5 +1,5 @@
 //
-//  cloneCommandOptions.swift
+//  templateCloneCommandOptions.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,27 +26,27 @@
 import Foundation
 import Bouncer
 
-/// Clone command options.
-public let cloneCommandOptions = [
+/// Template clone command options.
+let templateCloneCommandOptions = [
     templateCloneBranchOption,
     templateCloneForceOption,
     templateCloneVerboseOption
 ]
 
 /// Template clone branch option.
-public let templateCloneBranchOption = Option(name: "branch",
-                                              shortName: "b",
-                                              optional: true,
-                                              argumentType: .required)
+let templateCloneBranchOption = Option(name: "branch",
+                                       shortName: "b",
+                                       optional: true,
+                                       argumentType: .required)
 
 /// Template clone force option.
-public let templateCloneForceOption = Option(name: "force",
-                                             shortName: "f",
-                                             optional: true,
-                                             argumentType: .none)
+let templateCloneForceOption = Option(name: "force",
+                                      shortName: "f",
+                                      optional: true,
+                                      argumentType: .none)
 
 /// Template clone verbose option.
-public let templateCloneVerboseOption = Option(name: "verbose",
-                                               shortName: "v",
-                                               optional: true,
-                                               argumentType: .none)
+let templateCloneVerboseOption = Option(name: "verbose",
+                                        shortName: "v",
+                                        optional: true,
+                                        argumentType: .none)

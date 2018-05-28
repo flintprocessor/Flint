@@ -1,5 +1,5 @@
 //
-//  cloneCommandHandler.swift
+//  templateCloneCommandHandler.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -29,8 +29,8 @@ import Bouncer
 import Motor
 import Work
 
-/// Clone command handler.
-public let cloneCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
+/// Template clone command handler.
+let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let gitURLOperand = operandValues[0]
     let templatePathOperand = operandValues[1]
