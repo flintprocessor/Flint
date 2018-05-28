@@ -30,7 +30,7 @@ import PathFinder
 ///
 /// - Returns: Path for template directory.
 /// - Throws: Error creating template directory.
-public func getTemplateDirectoryPath() throws -> Path {
+func getTemplateDirectoryPath() throws -> Path {
     let templateDirectory = Env.templateDirectoryPath ??
         Path.applicationSupportDirectory["com.flintbox.flint"]["template"]
     if !(templateDirectory.exists && templateDirectory.isDirectory) {

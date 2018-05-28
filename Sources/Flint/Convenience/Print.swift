@@ -29,20 +29,20 @@ import ANSIEscapeCode
 /// Print light black verbose output.
 ///
 /// - Parameter output: Output string.
-public func printVerbose(_ output: String) {
+func printVerbose(_ output: String) {
     print(output.color(.lightBlack))
 }
 
 /// Print yellow warning output.
 ///
 /// - Parameter output: Output string.
-public func printWarning(_ output: String) {
+func printWarning(_ output: String) {
     print(output.color(.yellow))
 }
 
 /// Print red error output.
 ///
 /// - Parameter output: Output string.
-public func printError(_ output: String) {
+func printError(_ output: String) {
     print(output.color(.red))
 }

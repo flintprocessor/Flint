@@ -28,14 +28,14 @@ import Bouncer
 
 /// Template clone command.
 /// `flint template clone [git url] [template path]`
-public let templateCloneCommand = Command(name: ["template", "clone"],
-                                          operandType: .equal(2),
-                                          options: cloneCommandOptions,
-                                          handler: cloneCommandHandler)
+let templateCloneCommand = Command(name: ["template", "clone"],
+                                   operandType: .equal(2),
+                                   options: templateCloneCommandOptions,
+                                   handler: templateCloneCommandHandler)
 
 /// Template clone command alias.
 /// `flint t c [git url] [template path]`
-public let templateCloneCommandAlias = Command(name: ["t", "c"],
-                                               operandType: .equal(2),
-                                               options: cloneCommandOptions,
-                                               handler: cloneCommandHandler)
+let templateCloneCommandAlias = Command(name: ["t", "c"],
+                                        operandType: .equal(2),
+                                        options: templateCloneCommandOptions,
+                                        handler: templateCloneCommandHandler)

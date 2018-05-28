@@ -27,15 +27,15 @@ import Foundation
 import PathFinder
 
 /// Flint Environment Variables.
-public struct Env {
+struct Env {
 
     /// Environment Variables.
-    public static var environment: [String: String] {
+    static var environment: [String: String] {
         return ProcessInfo.processInfo.environment
     }
 
     /// Template directory path. `FLINT_TEMPLATE`
-    public static var templateDirectoryPath: Path? {
+    static var templateDirectoryPath: Path? {
         guard let environmentValue = environment["FLINT_TEMPLATE"] else { return nil }
         return Path(fileURLWithPath: environmentValue)
     }
