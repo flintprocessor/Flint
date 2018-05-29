@@ -6,6 +6,8 @@ let program = Program(commands: [templateCloneCommand,
                                  templateAddCommand,
                                  templateAddCommandAlias,
                                  templateListCommand,
-                                 templateListCommandAlias])
+                                 templateListCommandAlias,
+                                 templateRemoveCommand,
+                                 templateRemoveCommandAlias])
 
 try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
