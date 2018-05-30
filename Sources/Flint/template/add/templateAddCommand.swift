@@ -29,13 +29,13 @@ import Bouncer
 /// Template add command.
 /// `flint template add [original template path] [template path]`
 let templateAddCommand = Command(name: ["template", "add"],
-                                 operandType: .equal(2),
+                                 operandType: .range(1...2),
                                  options: templateAddCommandOptions,
                                  handler: templateAddCommandHandler)
 
 /// Template add command alias.
 /// `flint t a [original template path] [template path]`
 let templateAddCommandAlias = Command(name: ["t", "a"],
-                                      operandType: .equal(2),
+                                      operandType: .range(1...2),
                                       options: templateAddCommandOptions,
                                       handler: templateAddCommandHandler)

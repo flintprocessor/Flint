@@ -33,7 +33,7 @@ import Work
 let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let gitURLOperand = operandValues[0]
-    let templatePathOperand = operandValues[1]
+    let templatePathOperand = operandValues[optional: 1]
     let branch = optionValues.findOptionalArgument(for: templateCloneBranchOption)
     let force = optionValues.have(templateCloneForceOption)
     let verbose = optionValues.have(templateCloneVerboseOption)
@@ -44,7 +44,7 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
             """
             Input summary
             └╴Repository URL: \(gitURLOperand)
-            └╴Template Path : \(templatePathOperand)
+            └╴Template Path : \(templatePathOperand ?? "nil")
             └╴Branch        : \(branch ?? "HEAD")
             └╴Force         : \(force)
             └╴Verbose       : \(verbose)
@@ -52,10 +52,15 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
         )
     }
 
-    // Template full Path.
+    // Prepare paths.
     let templateFullPath: Path
     do {
-        templateFullPath = try getTemplateDirectoryPath()[templatePathOperand]
+        guard let gitURL = URL(string: gitURLOperand) else {
+            printError("\(gitURLOperand) is not a valid url.")
+            return
+        }
+        let templateDirectoryName = templatePathOperand ?? gitURL.deletingPathExtension().lastPathComponent
+        templateFullPath = try getTemplateDirectoryPath()[templateDirectoryName]
     } catch {
         printError(error.localizedDescription)
         return

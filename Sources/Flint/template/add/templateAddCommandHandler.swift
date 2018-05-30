@@ -32,7 +32,7 @@ import Motor
 let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let originalTemplatePathOperand = operandValues[0]
-    let templatePathOperand = operandValues[1]
+    let templatePathOperand = operandValues[optional: 1]
     let force = optionValues.have(templateAddForceOption)
     let verbose = optionValues.have(templateAddVerboseOption)
 
@@ -42,17 +42,19 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
             """
             Input summary
             └╴Original Template Path: \(originalTemplatePathOperand)
-            └╴Template Path         : \(templatePathOperand)
+            └╴Template Path         : \(templatePathOperand ?? "nil")
             └╴Force                 : \(force)
             └╴Verbose               : \(verbose)
             """
         )
     }
 
-    // Template full Path.
+    // Prepare paths.
     let templateFullPath: Path
+    let originalTemplatePath = Path(fileURLWithPath: originalTemplatePathOperand)
     do {
-        templateFullPath = try getTemplateDirectoryPath()[templatePathOperand]
+        let templateDirectoryName = templatePathOperand ?? originalTemplatePath.rawValue.lastPathComponent
+        templateFullPath = try getTemplateDirectoryPath()[templateDirectoryName]
     } catch {
         printError(error.localizedDescription)
         return
@@ -74,14 +76,11 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
         }
     }
 
-    // Prepare copying.
-    let spinner = Spinner(pattern: Patterns.dots, delay: 2)
-    let originalTemplatePath = Path(fileURLWithPath: originalTemplatePathOperand)
-
     // Start copying.
     if verbose {
         printVerbose("Copy \(originalTemplatePath.path) to \(templateFullPath.path)")
     }
+    let spinner = Spinner(pattern: Patterns.dots, delay: 2)
     spinner.start(message: "Copying...")
     do {
         try originalTemplatePath.copy(to: templateFullPath)
