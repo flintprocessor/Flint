@@ -27,6 +27,22 @@ import Foundation
 import PathFinder
 import Yams
 
+/// Read template from template file.
+///
+/// - Parameter path: Path for template file.
+/// - Returns: Template.
+/// - Throws: Read data error. Decode error.
+func readTemplate(atPath path: Path) throws -> Template? {
+    if path.name == jsonTemplateFileName {
+        return try readJSONTemplate(atPath: path)
+    } else if path.name == yamlTemplateFileName ||
+        path.name == ymlTemplateFileName {
+        return try readYAMLTemplate(atPath: path)
+    } else {
+        return nil
+    }
+}
+
 /// Read template from JSON template file.
 ///
 /// - Parameter path: Path for JSON template file.

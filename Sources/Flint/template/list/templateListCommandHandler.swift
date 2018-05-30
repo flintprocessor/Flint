@@ -58,11 +58,8 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
             // Read template.
             let template: Template
             do {
-                if contentPath.name == jsonTemplateFileName {
-                    template = try readJSONTemplate(atPath: contentPath)
-                } else if contentPath.name == yamlTemplateFileName ||
-                    contentPath.name == ymlTemplateFileName {
-                    template = try readYAMLTemplate(atPath: contentPath)
+                if let readTemplate = try readTemplate(atPath: contentPath) {
+                    template = readTemplate
                 } else {
                     return
                 }
