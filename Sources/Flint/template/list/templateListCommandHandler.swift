@@ -45,7 +45,11 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
     // List available templates.
     do {
         let templateDirectoryPath = try getTemplateDirectoryPath()
-        try templateDirectoryPath.enumerate { contentPath in
+        if verbose {
+            printVerbose("\(templateDirectoryPath.path)")
+        }
+
+        for contentPath in try templateDirectoryPath.enumerated() {
             // Get template path.
             let contentParentPath = contentPath.parent.path
             let pathToPrint: String
@@ -61,11 +65,11 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
                 if let readTemplate = try readTemplate(atPath: contentPath) {
                     template = readTemplate
                 } else {
-                    return
+                    continue
                 }
             } catch {
                 print("\(pathToPrint.boldOutput) - \(error.localizedDescription.color(.red))")
-                return
+                continue
             }
 
             // Print template info.
