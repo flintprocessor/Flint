@@ -1,5 +1,5 @@
 //
-//  Tag.swift
+//  Variable.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -25,11 +25,11 @@
 
 import Foundation
 
-/// Template tag.
-struct Tag: Codable {
+/// Variable.
+struct Variable: Codable {
 
-    /// Key.
-    let key: String
+    /// Name.
+    let name: String
     /// Display name for
     /// interactive cli interface.
     let displayName: String?
