@@ -1,5 +1,5 @@
 //
-//  Print.swift
+//  print.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
