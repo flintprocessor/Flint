@@ -1,5 +1,5 @@
 //
-//  TemplateFileName.swift
+//  ManifestFileName.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -25,9 +25,9 @@
 
 import Foundation
 
-/// JSON template file name.
-let jsonTemplateFileName = "template.json"
-/// YAML template file name.
-let yamlTemplateFileName = "template.yaml"
-/// YAML template file name (short).
-let ymlTemplateFileName = "template.yml"
+/// JSON manifest file name.
+let jsonManifestFileName = "template.json"
+/// YAML manifest file name.
+let yamlManifestFileName = "template.yaml"
+/// YAML manifest file name (short).
+let ymlManifestFileName = "template.yml"
