@@ -31,7 +31,7 @@ import ANSIEscapeCode
 /// Template remove command handler.
 let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
-    let templatePathOperand = operandValues[0]
+    let templateNameOperand = operandValues[0]
     let verbose = optionValues.have(templateRemoveVerboseOption)
 
     // Print input summary.
@@ -39,35 +39,33 @@ let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, option
         printVerbose(
             """
             Input summary
-            └╴Template Path: \(templatePathOperand)
+            └╴Template Path: \(templateNameOperand)
             └╴Verbose      : \(verbose)
             """
         )
     }
 
-    // Template full Path.
-    let templateFullPath: Path
+    // Template path to remove.
+    let templatePathToRemove: Path
     do {
-        templateFullPath = try getTemplateDirectoryPath()[templatePathOperand]
+        templatePathToRemove = try getTemplateDirectory()[templateNameOperand]
     } catch {
         printError(error.localizedDescription)
         return
     }
 
-    // Validate template full Path.
-    if !(templateFullPath[jsonTemplateFileName].exists ||
-        templateFullPath[ymlTemplateFileName].exists ||
-        templateFullPath[yamlTemplateFileName].exists) {
-        printError("Invalid template path.")
+    // Validate template path.
+    if (try? Template(path: templatePathToRemove)) == nil {
+        printError("Invalid template name.")
         return
     }
 
     // Remove template.
     if verbose {
-        printVerbose("Remove \(templateFullPath.path)")
+        printVerbose("Remove \(templatePathToRemove.path)")
     }
     do {
-        try templateFullPath.remove()
+        try templatePathToRemove.remove()
         print("✓".color(.green) + " Removed")
     } catch {
         printError(error.localizedDescription)
