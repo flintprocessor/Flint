@@ -24,13 +24,13 @@
 //
 
 import Foundation
+import PathFinder
 import Bouncer
-import ANSIEscapeCode
 
 /// Template list command handler.
 let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
-    let verbose = optionValues.have(templateCloneVerboseOption)
+    let verbose = optionValues.have(templateListVerboseOption)
 
     // Print input summary.
     if verbose {
@@ -42,44 +42,42 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
         )
     }
 
-    // List available templates.
+    // Prepare paths.
+    let templateDirectory: Path
     do {
-        let templateDirectoryPath = try getTemplateDirectoryPath()
-        if verbose {
-            printVerbose("\(templateDirectoryPath.path)")
-        }
+        templateDirectory = try getTemplateDirectory()
+    } catch {
+        printError(error.localizedDescription)
+        return
+    }
 
-        for contentPath in try templateDirectoryPath.enumerated() {
-            // Get template path.
-            let contentParentPath = contentPath.parent.path
-            let pathToPrint: String
-            if verbose {
-                pathToPrint = contentPath.parent.path
-            } else {
-                pathToPrint = String(contentParentPath.dropFirst(templateDirectoryPath.path.count + 1))
-            }
-
-            // Read template.
-            let template: Template
+    // List available templates.
+    if verbose {
+        printVerbose(templateDirectory.path)
+    }
+    do {
+        for content in try templateDirectory.enumerated() {
             do {
-                if let readTemplate = try readTemplate(atPath: contentPath) {
-                    template = readTemplate
+                let template = try Template(path: content)
+
+                let templateName: String
+                if verbose {
+                    templateName = content.path
                 } else {
-                    continue
+                    templateName = String(content.path.dropFirst(templateDirectory.path.count + 1))
                 }
+
+                let output: String
+                if let description = template.manifest.description {
+                    output = "\(templateName.boldOutput) - \(description)"
+                } else {
+                    output = templateName.boldOutput
+                }
+
+                print(output)
             } catch {
-                print("\(pathToPrint.boldOutput) - \(error.localizedDescription.color(.red))")
                 continue
             }
-
-            // Print template info.
-            let output: String
-            if let description = template.description {
-                output = "\(pathToPrint.boldOutput) - \(description)"
-            } else {
-                output = pathToPrint.boldOutput
-            }
-            print(output)
         }
     } catch {
         printError(error.localizedDescription)
