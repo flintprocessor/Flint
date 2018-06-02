@@ -30,12 +30,6 @@ struct Variable: Codable {
 
     /// Name.
     let name: String
-    /// Display name for
-    /// interactive cli interface.
-    let displayName: String?
     /// Default value.
     let defaultValue: String?
-    /// Description for
-    /// interactive cli interface.
-    let description: String?
 }
