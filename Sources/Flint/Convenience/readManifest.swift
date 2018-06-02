@@ -1,5 +1,5 @@
 //
-//  readTemplate.swift
+//  readManifest.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -27,38 +27,22 @@ import Foundation
 import PathFinder
 import Yams
 
-/// Read template from template file.
+/// Read JSON manifest file.
 ///
-/// - Parameter path: Path for template file.
-/// - Returns: Template.
+/// - Parameter path: Path for JSON manifest file.
+/// - Returns: Manifest.
 /// - Throws: Read data error. Decode error.
-func readTemplate(atPath path: Path) throws -> Template? {
-    if path.name == jsonTemplateFileName {
-        return try readJSONTemplate(atPath: path)
-    } else if path.name == yamlTemplateFileName ||
-        path.name == ymlTemplateFileName {
-        return try readYAMLTemplate(atPath: path)
-    } else {
-        return nil
-    }
-}
-
-/// Read template from JSON template file.
-///
-/// - Parameter path: Path for JSON template file.
-/// - Returns: Template.
-/// - Throws: Read data error. Decode error.
-func readJSONTemplate(atPath path: Path) throws -> Template {
+func readJSONManifest(atPath path: Path) throws -> Manifest {
     let data = try Data(contentsOf: path.rawValue)
-    return try JSONDecoder().decode(Template.self, from: data)
+    return try JSONDecoder().decode(Manifest.self, from: data)
 }
 
-/// Read template from YAML template file.
+/// Read YAML manifest file.
 ///
-/// - Parameter path: Path for YAML template file.
-/// - Returns: Template.
+/// - Parameter path: Path for YAML manifest file.
+/// - Returns: Manifest.
 /// - Throws: Read data error. Decode error.
-func readYAMLTemplate(atPath path: Path) throws -> Template {
+func readYAMLManifest(atPath path: Path) throws -> Manifest {
     let string = try String(contentsOf: path.rawValue, encoding: .utf8)
-    return try YAMLDecoder().decode(Template.self, from: string)
+    return try YAMLDecoder().decode(Manifest.self, from: string)
 }
