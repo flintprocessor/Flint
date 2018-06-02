@@ -1,5 +1,5 @@
 //
-//  ManifestFileName.swift
+//  TemplateFormatError.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -24,10 +24,18 @@
 //
 
 import Foundation
+import PathFinder
 
-/// JSON manifest file name.
-let jsonManifestFileName = "template.json"
-/// YAML manifest file name.
-let yamlManifestFileName = "template.yaml"
-/// YAML manifest file name (short).
-let ymlManifestFileName = "template.yml"
+/// Template format error.
+///
+/// - manifestFileNotExists: Manifest file not exists.
+enum TemplateFormatError: Error {
+    case manifestFileNotExists(Path)
+
+    var localizedDescription: String {
+        switch self {
+        case .manifestFileNotExists(let path):
+            return "Manifest file not exists under \(path.path)"
+        }
+    }
+}

@@ -24,12 +24,38 @@
 //
 
 import Foundation
+import PathFinder
 
 /// Template.
-struct Template: Codable {
+struct Template {
 
-    /// Tags.
-    let tags: [Tag]
-    /// Description for template.
-    let description: String?
+    /// Manifest.
+    let manifest: Manifest
+    /// Template files path.
+    let templateFilesPath: Path
+    /// Prehook scripts path.
+    let prehookScriptsPath: Path
+    /// Posthook scripts path.
+    let posthookScriptsPath: Path
+
+    /// Initialize template.
+    ///
+    /// - Parameter path: Path for template directory.
+    /// - Throws: Template format error.
+    init(path: Path) throws {
+        // Read manifest.
+        if path["template.json"].exists {
+            manifest = try readJSONManifest(atPath: path["template.json"])
+        } else if path["template.yaml"].exists {
+            manifest = try readYAMLManifest(atPath: path["template.yaml"])
+        } else if path["template.yml"].exists {
+            manifest = try readYAMLManifest(atPath: path["template.yml"])
+        } else {
+            throw TemplateFormatError.manifestFileNotExists(path)
+        }
+        // Set paths.
+        templateFilesPath = path["template"]
+        prehookScriptsPath = path["prehook"]
+        posthookScriptsPath = path["posthook"]
+    }
 }
