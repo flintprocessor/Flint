@@ -31,8 +31,8 @@ import Motor
 /// Template add command handler.
 let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
-    let originalTemplatePathOperand = operandValues[0]
-    let templatePathOperand = operandValues[optional: 1]
+    let templatePathOperand = operandValues[0]
+    let templateNameOperand = operandValues[optional: 1]
     let force = optionValues.have(templateAddForceOption)
     let verbose = optionValues.have(templateAddVerboseOption)
 
@@ -41,36 +41,36 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
         printVerbose(
             """
             Input summary
-            └╴Original Template Path: \(originalTemplatePathOperand)
-            └╴Template Path         : \(templatePathOperand ?? "nil")
-            └╴Force                 : \(force)
-            └╴Verbose               : \(verbose)
+            └╴Template Path: \(templatePathOperand)
+            └╴Template Name: \(templateNameOperand ?? "nil")
+            └╴Force        : \(force)
+            └╴Verbose      : \(verbose)
             """
         )
     }
 
     // Prepare paths.
-    let templateFullPath: Path
-    let originalTemplatePath = Path(fileURLWithPath: originalTemplatePathOperand)
+    let templatePath = Path(fileURLWithPath: templatePathOperand)
+    let pathToCopyTemplate: Path
     do {
-        let templateDirectoryName = templatePathOperand ?? originalTemplatePath.rawValue.lastPathComponent
-        templateFullPath = try getTemplateDirectoryPath()[templateDirectoryName]
+        let templateName = templateNameOperand ?? templatePath.rawValue.lastPathComponent
+        pathToCopyTemplate = try getTemplateDirectory()[templateName]
     } catch {
         printError(error.localizedDescription)
         return
     }
 
     // Check existing template.
-    if templateFullPath.exists {
+    if pathToCopyTemplate.exists {
         if force {
             do {
-                try templateFullPath.remove()
+                try pathToCopyTemplate.remove()
             } catch {
                 printError(error.localizedDescription)
                 return
             }
         } else {
-            printWarning("Template already exists at \(templateFullPath.path)")
+            printWarning("Template already exists at \(pathToCopyTemplate.path)")
             printWarning("Use --force/-f option to override")
             return
         }
@@ -78,12 +78,12 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
 
     // Start copying.
     if verbose {
-        printVerbose("Copy \(originalTemplatePath.path) to \(templateFullPath.path)")
+        printVerbose("Copy \(templatePath.path) to \(pathToCopyTemplate.path)")
     }
     let spinner = Spinner(pattern: Patterns.dots, delay: 2)
     spinner.start(message: "Copying...")
     do {
-        try originalTemplatePath.copy(to: templateFullPath)
+        try templatePath.copy(to: pathToCopyTemplate)
         spinner.stop(message: "✓".color(.green) + " Done")
     } catch {
         spinner.stop()
