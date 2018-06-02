@@ -33,7 +33,7 @@ import Work
 let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let gitURLOperand = operandValues[0]
-    let templatePathOperand = operandValues[optional: 1]
+    let templateNameOperand = operandValues[optional: 1]
     let branch = optionValues.findOptionalArgument(for: templateCloneBranchOption)
     let force = optionValues.have(templateCloneForceOption)
     let verbose = optionValues.have(templateCloneVerboseOption)
@@ -44,7 +44,7 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
             """
             Input summary
             └╴Repository URL: \(gitURLOperand)
-            └╴Template Path : \(templatePathOperand ?? "nil")
+            └╴Template Name : \(templateNameOperand ?? "nil")
             └╴Branch        : \(branch ?? "HEAD")
             └╴Force         : \(force)
             └╴Verbose       : \(verbose)
@@ -53,30 +53,30 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
     }
 
     // Prepare paths.
-    let templateFullPath: Path
+    let pathToCloneTemplate: Path
     do {
         guard let gitURL = URL(string: gitURLOperand) else {
             printError("\(gitURLOperand) is not a valid url.")
             return
         }
-        let templateDirectoryName = templatePathOperand ?? gitURL.deletingPathExtension().lastPathComponent
-        templateFullPath = try getTemplateDirectoryPath()[templateDirectoryName]
+        let templateName = templateNameOperand ?? gitURL.deletingPathExtension().lastPathComponent
+        pathToCloneTemplate = try getTemplateDirectory()[templateName]
     } catch {
         printError(error.localizedDescription)
         return
     }
 
     // Check existing template.
-    if templateFullPath.exists {
+    if pathToCloneTemplate.exists {
         if force {
             do {
-                try templateFullPath.remove()
+                try pathToCloneTemplate.remove()
             } catch {
                 printError(error.localizedDescription)
                 return
             }
         } else {
-            printWarning("Template already exists at \(templateFullPath.path)")
+            printWarning("Template already exists at \(pathToCloneTemplate.path)")
             printWarning("Use --force/-f option to override")
             return
         }
@@ -84,7 +84,7 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
 
     // Prepare cloning.
     let spinner = Spinner(pattern: Patterns.dots, delay: 2)
-    var gitCommand = "git clone \(gitURLOperand) \"\(templateFullPath.path)\" --single-branch --depth 1"
+    var gitCommand = "git clone \(gitURLOperand) \"\(pathToCloneTemplate.path)\" --single-branch --depth 1"
     if let branch = branch {
         gitCommand.append(" -b \(branch)")
     }
