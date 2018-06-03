@@ -1,5 +1,5 @@
 //
-//  sparkCommandOptions.swift
+//  inputCommandOptions.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,41 +26,41 @@
 import Foundation
 import Bouncer
 
-/// Spark command options.
-let sparkCommandOptions = [
-    sparkTemplatePathOption,
-    sparkOutputOption,
-    sparkInputOption,
-    sparkForceOption,
-    sparkVerboseOption
+/// Input command options.
+let inputCommandOptions = [
+    inputTemplatePathOption,
+    inputOutputOption,
+    inputYAMLOption,
+    inputForceOption,
+    inputVerboseOption
 ]
 
-/// Spark template path option.
-let sparkTemplatePathOption = Option(name: "template",
+/// Input template path option.
+let inputTemplatePathOption = Option(name: "template",
                                      shortName: "t",
                                      optional: true,
                                      argumentType: .required)
 
-/// Spark output option.
-let sparkOutputOption = Option(name: "output",
+/// Input output option.
+let inputOutputOption = Option(name: "output",
                                shortName: "o",
                                optional: true,
                                argumentType: .required)
 
-/// Spark input option.
-let sparkInputOption = Option(name: "input",
-                               shortName: "i",
-                               optional: true,
-                               argumentType: .required)
+/// Input yaml option.
+let inputYAMLOption = Option(name: "yaml",
+                             shortName: "y",
+                             optional: true,
+                             argumentType: .none)
 
-/// Spark force option.
-let sparkForceOption = Option(name: "force",
+/// Input force option.
+let inputForceOption = Option(name: "force",
                               shortName: "f",
                               optional: true,
                               argumentType: .none)
 
-/// Spark verbose option.
-let sparkVerboseOption = Option(name: "verbose",
+/// Input verbose option.
+let inputVerboseOption = Option(name: "verbose",
                                 shortName: "v",
                                 optional: true,
                                 argumentType: .none)

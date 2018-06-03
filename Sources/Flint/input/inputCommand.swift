@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  inputCommand.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,17 +26,16 @@
 import Foundation
 import Bouncer
 
-let program = Program(commands: [templateCloneCommand,
-                                 templateCloneCommandAlias,
-                                 templateAddCommand,
-                                 templateAddCommandAlias,
-                                 templateListCommand,
-                                 templateListCommandAlias,
-                                 templateRemoveCommand,
-                                 templateRemoveCommandAlias,
-                                 sparkCommand,
-                                 sparkCommandAlias,
-                                 inputCommand,
-                                 inputCommandAlias])
+/// Input command.
+/// `flint input [template name]`
+let inputCommand = Command(name: ["input"],
+                           operandType: .optionalEqual(1),
+                           options: inputCommandOptions,
+                           handler: inputCommandHandler)
 
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+/// Input command alias.
+/// `flint i [template name]`
+let inputCommandAlias = Command(name: ["i"],
+                                operandType: .optionalEqual(1),
+                                options: inputCommandOptions,
+                                handler: inputCommandHandler)

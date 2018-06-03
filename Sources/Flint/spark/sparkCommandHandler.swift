@@ -27,6 +27,7 @@ import Foundation
 import PathFinder
 import Bouncer
 import Work
+import Yams
 
 /// Spark command handler.
 let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
@@ -34,6 +35,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     let templateNameOperand = operandValues[optional: 0]
     let templatePathOptionValue = optionValues.findOptionalArgument(for: sparkTemplatePathOption)
     let outputPathOptionValue = optionValues.findOptionalArgument(for: sparkOutputOption)
+    let inputPathOptionValue = optionValues.findOptionalArgument(for: sparkInputOption)
     let force = optionValues.have(sparkForceOption)
     let verbose = optionValues.have(sparkVerboseOption)
 
@@ -45,6 +47,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             └╴Template Name: \(templateNameOperand ?? "nil")
             └╴Template Path: \(templatePathOptionValue ?? "nil")
             └╴Output Path  : \(outputPathOptionValue ?? "nil")
+            └╴Input Path   : \(inputPathOptionValue ?? "nil")
             └╴Force        : \(force)
             └╴Verbose      : \(verbose)
             """
@@ -97,16 +100,38 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
 
     // Get inputs.
     var inputs: [String: String] = [:]
-    for variable in template.manifest.variables ?? [] {
-        var output = variable.name.boldOutput
-        if let defaultValue = variable.defaultValue {
-            output += " (\(defaultValue))"
+    if let inputPathOptionValue = inputPathOptionValue {
+        let inputPath = Path(fileURLWithPath: inputPathOptionValue)
+        if inputPath.rawValue.pathExtension == "json" {
+            do {
+                let data = try Data(contentsOf: inputPath.rawValue)
+                inputs = try JSONDecoder().decode([String: String].self, from: data)
+            } catch {
+                printError(error.localizedDescription)
+                return
+            }
+        } else if inputPath.rawValue.pathExtension == "yaml" ||
+            inputPath.rawValue.pathExtension == "yml" {
+            do {
+                let string = try String(contentsOf: inputPath.rawValue)
+                inputs = try YAMLDecoder().decode([String: String].self, from: string)
+            } catch {
+                printError(error.localizedDescription)
+                return
+            }
         }
-        print("\(output): ", terminator: "")
-        if let input = readLine(), input.count > 0 {
-            inputs[variable.name] = input
-        } else {
-            inputs[variable.name] = variable.defaultValue
+    } else {
+        for variable in template.manifest.variables ?? [] {
+            var output = variable.name.boldOutput
+            if let defaultValue = variable.defaultValue {
+                output += " (\(defaultValue))"
+            }
+            print("\(output): ", terminator: "")
+            if let input = readLine(), input.count > 0 {
+                inputs[variable.name] = input
+            } else {
+                inputs[variable.name] = variable.defaultValue
+            }
         }
     }
 
