@@ -36,16 +36,16 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
     if verbose {
         printVerbose(
             """
-            Input summary
+            Input Summary
             └╴Verbose: \(verbose)
             """
         )
     }
 
     // Prepare paths.
-    let templateDirectory: Path
+    let templateHomePath: Path
     do {
-        templateDirectory = try getTemplateHomePath()
+        templateHomePath = try getTemplateHomePath()
     } catch {
         printError(error.localizedDescription)
         return
@@ -53,31 +53,27 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
 
     // List available templates.
     if verbose {
-        printVerbose(templateDirectory.path)
+        printVerbose(templateHomePath.path)
     }
     do {
-        for content in try templateDirectory.enumerated() {
-            do {
-                let template = try Template(path: content)
+        for content in try templateHomePath.enumerated() {
+            guard let template = try? Template(path: content) else { continue }
 
-                let templateName: String
-                if verbose {
-                    templateName = content.path
-                } else {
-                    templateName = String(content.path.dropFirst(templateDirectory.path.count + 1))
-                }
-
-                let output: String
-                if let description = template.manifest.description {
-                    output = "\(templateName.boldOutput) - \(description)"
-                } else {
-                    output = templateName.boldOutput
-                }
-
-                print(output)
-            } catch {
-                continue
+            let templateName: String
+            if verbose {
+                templateName = content.path
+            } else {
+                templateName = String(content.relativePath)
             }
+
+            let output: String
+            if let description = template.manifest.description {
+                output = "\(templateName.boldOutput) - \(description)"
+            } else {
+                output = templateName.boldOutput
+            }
+
+            print(output)
         }
     } catch {
         printError(error.localizedDescription)
