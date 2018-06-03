@@ -27,14 +27,14 @@ import Foundation
 import Bouncer
 
 /// Template add command.
-/// `flint template add [original template path] [template path]`
+/// `flint template add [original template path] [template name]`
 let templateAddCommand = Command(name: ["template", "add"],
                                  operandType: .range(1...2),
                                  options: templateAddCommandOptions,
                                  handler: templateAddCommandHandler)
 
 /// Template add command alias.
-/// `flint t a [original template path] [template path]`
+/// `flint t a [original template path] [template name]`
 let templateAddCommandAlias = Command(name: ["t", "a"],
                                       operandType: .range(1...2),
                                       options: templateAddCommandOptions,
