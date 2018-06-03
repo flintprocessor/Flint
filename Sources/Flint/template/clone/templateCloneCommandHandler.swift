@@ -42,7 +42,7 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
     if verbose {
         printVerbose(
             """
-            Input summary
+            Input Summary
             └╴Repository URL: \(gitURLOperand)
             └╴Template Name : \(templateNameOperand ?? "nil")
             └╴Branch        : \(branch ?? "HEAD")
@@ -77,7 +77,7 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
             }
         } else {
             printWarning("Template already exists at \(pathToCloneTemplate.path)")
-            printWarning("Use --force/-f option to override")
+            printWarning("Use --force/-f option to override existing template")
             return
         }
     }

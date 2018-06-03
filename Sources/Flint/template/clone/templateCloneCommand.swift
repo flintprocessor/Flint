@@ -27,14 +27,16 @@ import Foundation
 import Bouncer
 
 /// Template clone command.
-/// `flint template clone [git url] [template name]`
+/// `flint template clone <repository-url> [<template-name>]
+/// [--branch | -b <branch>] [--force | -f] [--verbose | -v]`
 let templateCloneCommand = Command(name: ["template", "clone"],
                                    operandType: .range(1...2),
                                    options: templateCloneCommandOptions,
                                    handler: templateCloneCommandHandler)
 
 /// Template clone command alias.
-/// `flint t c [git url] [template name]`
+/// `flint t c <repository-url> [<template-name>]
+/// [--branch | -b <branch>] [--force | -f] [--verbose | -v]`
 let templateCloneCommandAlias = Command(name: ["t", "c"],
                                         operandType: .range(1...2),
                                         options: templateCloneCommandOptions,
