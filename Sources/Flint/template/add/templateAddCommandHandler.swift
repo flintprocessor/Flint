@@ -54,7 +54,7 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
     let pathToCopyTemplate: Path
     do {
         let templateName = templateNameOperand ?? templatePath.rawValue.lastPathComponent
-        pathToCopyTemplate = try getTemplateDirectory()[templateName]
+        pathToCopyTemplate = try getTemplateHomePath()[templateName]
     } catch {
         printError(error.localizedDescription)
         return

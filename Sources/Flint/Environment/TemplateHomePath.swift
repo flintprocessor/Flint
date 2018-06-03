@@ -1,5 +1,5 @@
 //
-//  TemplateDirectory.swift
+//  TemplateHomePath.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,15 +26,15 @@
 import Foundation
 import PathFinder
 
-/// Get path for template directory.
+/// Get template home path.
 ///
-/// - Returns: Path for template directory.
-/// - Throws: Error creating template directory.
-func getTemplateDirectory() throws -> Path {
-    let templateDirectory = Env.templateDirectoryPath ??
+/// - Returns: Path for template home directory.
+/// - Throws: Error creating template home directory.
+func getTemplateHomePath() throws -> Path {
+    let templateHomePath = Env.templateHomePath ??
         Path.applicationSupportDirectory["com.flintbox.flint"]["template"]
-    if !(templateDirectory.exists && templateDirectory.isDirectory) {
-        try templateDirectory.createDirectory()
+    if !(templateHomePath.exists && templateHomePath.isDirectory) {
+        try templateHomePath.createDirectory()
     }
-    return templateDirectory
+    return templateHomePath
 }

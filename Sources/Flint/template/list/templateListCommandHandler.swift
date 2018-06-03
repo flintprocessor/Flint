@@ -45,7 +45,7 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
     // Prepare paths.
     let templateDirectory: Path
     do {
-        templateDirectory = try getTemplateDirectory()
+        templateDirectory = try getTemplateHomePath()
     } catch {
         printError(error.localizedDescription)
         return

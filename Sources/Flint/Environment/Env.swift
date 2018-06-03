@@ -34,9 +34,9 @@ struct Env {
         return ProcessInfo.processInfo.environment
     }
 
-    /// Template directory path. `FLINT_TEMPLATE`
-    static var templateDirectoryPath: Path? {
-        guard let environmentValue = environment["FLINT_TEMPLATE"] else { return nil }
+    /// Template home path. `FLINT_TEMPLATE_HOME`
+    static var templateHomePath: Path? {
+        guard let environmentValue = environment["FLINT_TEMPLATE_HOME"] else { return nil }
         return Path(fileURLWithPath: environmentValue)
     }
 }

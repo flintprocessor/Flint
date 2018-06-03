@@ -48,7 +48,7 @@ let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, option
     // Template path to remove.
     let templatePathToRemove: Path
     do {
-        templatePathToRemove = try getTemplateDirectory()[templateNameOperand]
+        templatePathToRemove = try getTemplateHomePath()[templateNameOperand]
     } catch {
         printError(error.localizedDescription)
         return

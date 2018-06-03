@@ -60,7 +60,7 @@ let templateCloneCommandHandler: CommandHandler = { _, _, operandValues, optionV
             return
         }
         let templateName = templateNameOperand ?? gitURL.deletingPathExtension().lastPathComponent
-        pathToCloneTemplate = try getTemplateDirectory()[templateName]
+        pathToCloneTemplate = try getTemplateHomePath()[templateName]
     } catch {
         printError(error.localizedDescription)
         return

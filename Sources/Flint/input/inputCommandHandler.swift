@@ -57,7 +57,7 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     do {
         let templatePath: Path
         if let templateName = templateNameOperand {
-            templatePath = try getTemplateDirectory()[templateName]
+            templatePath = try getTemplateHomePath()[templateName]
             if let templatePathOptionValue = templatePathOptionValue {
                 printWarning("Ignore \(templatePathOptionValue)")
             }
