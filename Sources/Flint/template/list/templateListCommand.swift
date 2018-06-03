@@ -27,14 +27,14 @@ import Foundation
 import Bouncer
 
 /// Template list command.
-/// `flint template list`
+/// `flint template list [--verbose | -v]`
 let templateListCommand = Command(name: ["template", "list"],
                                   operandType: .none,
                                   options: templateListCommandOptions,
                                   handler: templateListCommandHandler)
 
 /// Template list command alias.
-/// `flint t l`
+/// `flint t l [--verbose | -v]`
 let templateListCommandAlias = Command(name: ["t", "l"],
                                        operandType: .none,
                                        options: templateListCommandOptions,
