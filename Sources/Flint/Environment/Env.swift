@@ -26,10 +26,10 @@
 import Foundation
 import PathFinder
 
-/// Flint Environment Variables.
+/// Flint environment variables.
 struct Env {
 
-    /// Environment Variables.
+    /// Environment variables.
     static var environment: [String: String] {
         return ProcessInfo.processInfo.environment
     }
