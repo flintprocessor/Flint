@@ -37,6 +37,8 @@ struct Template {
     let prehookScriptsPath: Path
     /// Posthook scripts path.
     let posthookScriptsPath: Path
+    /// Template path.
+    let path: Path
 
     /// Initialize template.
     ///
@@ -57,5 +59,6 @@ struct Template {
         templateFilesPath = path["template"]
         prehookScriptsPath = path["prehook"]
         posthookScriptsPath = path["posthook"]
+        self.path = path
     }
 }
