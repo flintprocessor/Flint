@@ -43,15 +43,15 @@ let sparkTemplatePathOption = Option(name: "template",
 
 /// Spark output path option.
 let sparkOutputPathOption = Option(name: "output",
-                               shortName: "o",
-                               optional: true,
-                               argumentType: .required)
+                                   shortName: "o",
+                                   optional: true,
+                                   argumentType: .required)
 
 /// Spark input file path option.
 let sparkInputFilePathOption = Option(name: "input",
-                               shortName: "i",
-                               optional: true,
-                               argumentType: .required)
+                                      shortName: "i",
+                                      optional: true,
+                                      argumentType: .required)
 
 /// Spark force option.
 let sparkForceOption = Option(name: "force",

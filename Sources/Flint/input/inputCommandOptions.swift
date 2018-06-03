@@ -29,7 +29,7 @@ import Bouncer
 /// Input command options.
 let inputCommandOptions = [
     inputTemplatePathOption,
-    inputOutputOption,
+    inputOutputPathOption,
     inputYAMLOption,
     inputForceOption,
     inputVerboseOption
@@ -41,11 +41,11 @@ let inputTemplatePathOption = Option(name: "template",
                                      optional: true,
                                      argumentType: .required)
 
-/// Input output option.
-let inputOutputOption = Option(name: "output",
-                               shortName: "o",
-                               optional: true,
-                               argumentType: .required)
+/// Input output path option.
+let inputOutputPathOption = Option(name: "output",
+                                   shortName: "o",
+                                   optional: true,
+                                   argumentType: .required)
 
 /// Input yaml option.
 let inputYAMLOption = Option(name: "yaml",

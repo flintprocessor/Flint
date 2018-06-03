@@ -31,11 +31,11 @@ import Bouncer
 let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let templateNameOperand = operandValues[optional: 0]
-    let templatePathOptionValue = optionValues.findOptionalArgument(for: sparkTemplatePathOption)
-    let outputPathOptionValue = optionValues.findOptionalArgument(for: sparkOutputPathOption)
+    let templatePathOptionValue = optionValues.findOptionalArgument(for: inputTemplatePathOption)
+    let outputPathOptionValue = optionValues.findOptionalArgument(for: inputOutputPathOption)
     let yaml = optionValues.have(inputYAMLOption)
-    let force = optionValues.have(sparkForceOption)
-    let verbose = optionValues.have(sparkVerboseOption)
+    let force = optionValues.have(inputForceOption)
+    let verbose = optionValues.have(inputVerboseOption)
 
     // Print input summary.
     if verbose {
@@ -64,7 +64,7 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         } else if let templatePathOptionValue = templatePathOptionValue {
             templatePath = Path(fileURLWithPath: templatePathOptionValue)
         } else {
-            printError("Template not specified.")
+            printError("Template not specified")
             return
         }
         template = try Template(path: templatePath)
@@ -75,18 +75,11 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
 
     // Output path.
     let outputPath: Path
+    let fileName = yaml ? "variables.yml" : "variables.json"
     if let outputPathOptionValue = outputPathOptionValue {
-        if yaml {
-            outputPath = Path(fileURLWithPath: outputPathOptionValue)["variables.yml"]
-        } else {
-            outputPath = Path(fileURLWithPath: outputPathOptionValue)["variables.json"]
-        }
+        outputPath = Path(fileURLWithPath: outputPathOptionValue)[fileName]
     } else {
-        if yaml {
-            outputPath = Path(fileURLWithPath: FileManager.default.currentDirectoryPath)["variables.yml"]
-        } else {
-            outputPath = Path(fileURLWithPath: FileManager.default.currentDirectoryPath)["variables.json"]
-        }
+        outputPath = Path(fileURLWithPath: FileManager.default.currentDirectoryPath)[fileName]
     }
 
     // Check if output path is valid.
@@ -104,6 +97,7 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         }
     }
 
+    // Create directory path.
     if !outputPath.parent.exists {
         do {
             try outputPath.parent.createDirectory()
@@ -113,6 +107,10 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         }
     }
 
+    // Write file.
+    if verbose {
+        printVerbose("Generate variable input file at \(outputPath.path)")
+    }
     if yaml {
         var output = ""
         for variable in template.manifest.variables ?? [] {
@@ -129,15 +127,15 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             return
         }
     } else {
-        var output = "{"
+        var output = "{\n"
         for variable in template.manifest.variables ?? [] {
             if let defaultValue = variable.defaultValue {
-                output.append("\n  \"\(variable.name)\": \"\(defaultValue)\",")
+                output.append("  \"\(variable.name)\": \"\(defaultValue)\",\n")
             } else {
-                output.append("\n  \"\(variable.name)\":,")
+                output.append("  \"\(variable.name)\":,\n")
             }
         }
-        output.append("\n}\n")
+        output.append("}\n")
         do {
             try output.write(to: outputPath.rawValue, atomically: true, encoding: .utf8)
         } catch {
@@ -145,4 +143,6 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             return
         }
     }
+
+    print("✓".color(.green) + " Variable Input File Generated")
 }

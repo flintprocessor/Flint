@@ -27,14 +27,16 @@ import Foundation
 import Bouncer
 
 /// Input command.
-/// `flint input [template name]`
+/// `flint input [<template-name>] [--template | -t <template-path>]
+/// [--output | -o <output-path>] [--yaml | -y] [--force | -f] [--verbose | -v]`
 let inputCommand = Command(name: ["input"],
                            operandType: .optionalEqual(1),
                            options: inputCommandOptions,
                            handler: inputCommandHandler)
 
 /// Input command alias.
-/// `flint i [template name]`
+/// `flint i [<template-name>] [--template | -t <template-path>]
+/// [--output | -o <output-path>] [--yaml | -y] [--force | -f] [--verbose | -v]`
 let inputCommandAlias = Command(name: ["i"],
                                 operandType: .optionalEqual(1),
                                 options: inputCommandOptions,
