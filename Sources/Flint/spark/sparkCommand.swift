@@ -27,14 +27,18 @@ import Foundation
 import Bouncer
 
 /// Spark command.
-/// `flint spark [template name]`
+/// `flint spark [<template-name>] [--template | -t <template-path>]
+/// [--output | -o <output-path>] [--input | -i <input-file-path>]
+/// [--force | -f] [--verbose | -v]`
 let sparkCommand = Command(name: ["spark"],
                            operandType: .optionalEqual(1),
                            options: sparkCommandOptions,
                            handler: sparkCommandHandler)
 
 /// Spark command alias.
-/// `flint s [template name]`
+/// `flint s [<template-name>] [--template | -t <template-path>]
+/// [--output | -o <output-path>] [--input | -i <input-file-path>]
+/// [--force | -f] [--verbose | -v]`
 let sparkCommandAlias = Command(name: ["s"],
                                 operandType: .optionalEqual(1),
                                 options: sparkCommandOptions,
