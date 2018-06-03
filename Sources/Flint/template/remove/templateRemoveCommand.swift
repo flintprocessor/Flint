@@ -27,15 +27,15 @@ import Foundation
 import Bouncer
 
 /// Template remove command.
-/// `flint template remove <template-name> [--verbose | -v]`
+/// `flint template remove <template-name>... [--verbose | -v]`
 let templateRemoveCommand = Command(name: ["template", "remove"],
-                                    operandType: .equal(1),
+                                    operandType: .range(1...Int.max),
                                     options: templateRemoveCommandOptions,
                                     handler: templateRemoveCommandHandler)
 
 /// Template remove command alias.
-/// `flint t r <template-name> [--verbose | -v]`
+/// `flint t r <template-name>... [--verbose | -v]`
 let templateRemoveCommandAlias = Command(name: ["t", "r"],
-                                         operandType: .equal(1),
+                                         operandType: .range(1...Int.max),
                                          options: templateRemoveCommandOptions,
                                          handler: templateRemoveCommandHandler)

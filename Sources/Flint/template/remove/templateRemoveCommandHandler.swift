@@ -30,7 +30,7 @@ import Bouncer
 /// Template remove command handler.
 let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
-    let templateNameOperand = operandValues[0]
+    let templateNames = operandValues
     let verbose = optionValues.have(templateRemoveVerboseOption)
 
     // Print input summary.
@@ -38,36 +38,40 @@ let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, option
         printVerbose(
             """
             Input Summary
-            └╴Template Path: \(templateNameOperand)
-            └╴Verbose      : \(verbose)
+            └╴Templates: \(templateNames)
+            └╴Verbose  : \(verbose)
             """
         )
     }
 
-    // Template path to remove.
-    let templatePathToRemove: Path
+    // Template paths to remove.
+    var templatePathsToRemove: [Path] = []
     do {
-        templatePathToRemove = try getTemplateHomePath()[templateNameOperand]
+        for templateName in templateNames {
+            templatePathsToRemove.append(try getTemplateHomePath()[templateName])
+        }
     } catch {
         printError(error.localizedDescription)
         return
     }
 
-    // Validate template path.
-    if (try? Template(path: templatePathToRemove)) == nil {
-        printError("Invalid template name")
-        return
-    }
+    // Remove templates.
+    for templatePathToRemove in templatePathsToRemove {
+        if verbose {
+            printVerbose("Remove \(templatePathToRemove.path)")
+        }
 
-    // Remove template.
-    if verbose {
-        printVerbose("Remove \(templatePathToRemove.path)")
-    }
-    do {
-        try templatePathToRemove.remove()
-        print("✓".color(.green) + " Removed")
-    } catch {
-        printError(error.localizedDescription)
-        return
+        if (try? Template(path: templatePathToRemove)) == nil {
+            printError("Cannot find template at \(templatePathToRemove.path)")
+            continue
+        }
+
+        do {
+            try templatePathToRemove.remove()
+            print("✓".color(.green) + " Removed")
+        } catch {
+            printError(error.localizedDescription)
+            continue
+        }
     }
 }
