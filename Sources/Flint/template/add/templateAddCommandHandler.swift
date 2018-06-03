@@ -40,7 +40,7 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
     if verbose {
         printVerbose(
             """
-            Input summary
+            Input Summary
             └╴Template Path: \(templatePathOperand)
             └╴Template Name: \(templateNameOperand ?? "nil")
             └╴Force        : \(force)
@@ -71,7 +71,7 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
             }
         } else {
             printWarning("Template already exists at \(pathToCopyTemplate.path)")
-            printWarning("Use --force/-f option to override")
+            printWarning("Use --force/-f option to override existing template")
             return
         }
     }
