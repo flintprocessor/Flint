@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  sparkCommandOptions.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,15 +26,34 @@
 import Foundation
 import Bouncer
 
-let program = Program(commands: [templateCloneCommand,
-                                 templateCloneCommandAlias,
-                                 templateAddCommand,
-                                 templateAddCommandAlias,
-                                 templateListCommand,
-                                 templateListCommandAlias,
-                                 templateRemoveCommand,
-                                 templateRemoveCommandAlias,
-                                 sparkCommand,
-                                 sparkCommandAlias])
+/// Spark command options.
+let sparkCommandOptions = [
+    sparkTemplatePathOption,
+    sparkOutputOption,
+    sparkForceOption,
+    sparkVerboseOption
+]
 
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+/// Spark template path option.
+let sparkTemplatePathOption = Option(name: "template",
+                                     shortName: "t",
+                                     optional: true,
+                                     argumentType: .required)
+
+/// Spark output option.
+let sparkOutputOption = Option(name: "output",
+                               shortName: "o",
+                               optional: true,
+                               argumentType: .required)
+
+/// Spark force option.
+let sparkForceOption = Option(name: "force",
+                              shortName: "f",
+                              optional: true,
+                              argumentType: .none)
+
+/// Spark verbose option.
+let sparkVerboseOption = Option(name: "verbose",
+                                shortName: "v",
+                                optional: true,
+                                argumentType: .none)

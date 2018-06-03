@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  sparkCommand.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,15 +26,16 @@
 import Foundation
 import Bouncer
 
-let program = Program(commands: [templateCloneCommand,
-                                 templateCloneCommandAlias,
-                                 templateAddCommand,
-                                 templateAddCommandAlias,
-                                 templateListCommand,
-                                 templateListCommandAlias,
-                                 templateRemoveCommand,
-                                 templateRemoveCommandAlias,
-                                 sparkCommand,
-                                 sparkCommandAlias])
+/// Spark command.
+/// `flint spark [template name]`
+let sparkCommand = Command(name: ["spark"],
+                           operandType: .optionalEqual(1),
+                           options: sparkCommandOptions,
+                           handler: sparkCommandHandler)
 
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+/// Spark command alias.
+/// `flint s [template name]`
+let sparkCommandAlias = Command(name: ["s"],
+                                operandType: .optionalEqual(1),
+                                options: sparkCommandOptions,
+                                handler: sparkCommandHandler)
