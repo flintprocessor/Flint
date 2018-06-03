@@ -26,7 +26,6 @@
 import Foundation
 import PathFinder
 import Bouncer
-import ANSIEscapeCode
 
 /// Template remove command handler.
 let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
@@ -38,7 +37,7 @@ let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, option
     if verbose {
         printVerbose(
             """
-            Input summary
+            Input Summary
             └╴Template Path: \(templateNameOperand)
             └╴Verbose      : \(verbose)
             """
@@ -56,7 +55,7 @@ let templateRemoveCommandHandler: CommandHandler = { _, _, operandValues, option
 
     // Validate template path.
     if (try? Template(path: templatePathToRemove)) == nil {
-        printError("Invalid template name.")
+        printError("Invalid template name")
         return
     }
 
