@@ -32,7 +32,7 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let templateNameOperand = operandValues[optional: 0]
     let templatePathOptionValue = optionValues.findOptionalArgument(for: sparkTemplatePathOption)
-    let outputPathOptionValue = optionValues.findOptionalArgument(for: sparkOutputOption)
+    let outputPathOptionValue = optionValues.findOptionalArgument(for: sparkOutputPathOption)
     let yaml = optionValues.have(inputYAMLOption)
     let force = optionValues.have(sparkForceOption)
     let verbose = optionValues.have(sparkVerboseOption)

@@ -34,8 +34,8 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Grab values.
     let templateNameOperand = operandValues[optional: 0]
     let templatePathOptionValue = optionValues.findOptionalArgument(for: sparkTemplatePathOption)
-    let outputPathOptionValue = optionValues.findOptionalArgument(for: sparkOutputOption)
-    let inputPathOptionValue = optionValues.findOptionalArgument(for: sparkInputOption)
+    let outputPathOptionValue = optionValues.findOptionalArgument(for: sparkOutputPathOption)
+    let inputFilePathOptionValue = optionValues.findOptionalArgument(for: sparkInputFilePathOption)
     let force = optionValues.have(sparkForceOption)
     let verbose = optionValues.have(sparkVerboseOption)
 
@@ -43,11 +43,11 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     if verbose {
         printVerbose(
             """
-            Input summary
+            Input Summary
             └╴Template Name: \(templateNameOperand ?? "nil")
             └╴Template Path: \(templatePathOptionValue ?? "nil")
             └╴Output Path  : \(outputPathOptionValue ?? "nil")
-            └╴Input Path   : \(inputPathOptionValue ?? "nil")
+            └╴Input Path   : \(inputFilePathOptionValue ?? "nil")
             └╴Force        : \(force)
             └╴Verbose      : \(verbose)
             """
@@ -100,8 +100,8 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
 
     // Get inputs.
     var inputs: [String: String] = [:]
-    if let inputPathOptionValue = inputPathOptionValue {
-        let inputPath = Path(fileURLWithPath: inputPathOptionValue)
+    if let inputFilePathOptionValue = inputFilePathOptionValue {
+        let inputPath = Path(fileURLWithPath: inputFilePathOptionValue)
         if inputPath.rawValue.pathExtension == "json" {
             do {
                 let data = try Data(contentsOf: inputPath.rawValue)

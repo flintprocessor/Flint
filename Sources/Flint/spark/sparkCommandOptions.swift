@@ -29,8 +29,8 @@ import Bouncer
 /// Spark command options.
 let sparkCommandOptions = [
     sparkTemplatePathOption,
-    sparkOutputOption,
-    sparkInputOption,
+    sparkOutputPathOption,
+    sparkInputFilePathOption,
     sparkForceOption,
     sparkVerboseOption
 ]
@@ -41,14 +41,14 @@ let sparkTemplatePathOption = Option(name: "template",
                                      optional: true,
                                      argumentType: .required)
 
-/// Spark output option.
-let sparkOutputOption = Option(name: "output",
+/// Spark output path option.
+let sparkOutputPathOption = Option(name: "output",
                                shortName: "o",
                                optional: true,
                                argumentType: .required)
 
-/// Spark input option.
-let sparkInputOption = Option(name: "input",
+/// Spark input file path option.
+let sparkInputFilePathOption = Option(name: "input",
                                shortName: "i",
                                optional: true,
                                argumentType: .required)
