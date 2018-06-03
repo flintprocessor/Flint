@@ -66,7 +66,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         } else if let templatePathOptionValue = templatePathOptionValue {
             templatePath = Path(fileURLWithPath: templatePathOptionValue)
         } else {
-            printError("Template not specified.")
+            printError("Template not specified")
             return
         }
         template = try Template(path: templatePath)
@@ -102,23 +102,21 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     var inputs: [String: String] = [:]
     if let inputFilePathOptionValue = inputFilePathOptionValue {
         let inputPath = Path(fileURLWithPath: inputFilePathOptionValue)
-        if inputPath.rawValue.pathExtension == "json" {
-            do {
+        do {
+            switch inputPath.rawValue.pathExtension {
+            case "json":
                 let data = try Data(contentsOf: inputPath.rawValue)
                 inputs = try JSONDecoder().decode([String: String].self, from: data)
-            } catch {
-                printError(error.localizedDescription)
-                return
-            }
-        } else if inputPath.rawValue.pathExtension == "yaml" ||
-            inputPath.rawValue.pathExtension == "yml" {
-            do {
+            case "yaml", "yml":
                 let string = try String(contentsOf: inputPath.rawValue)
                 inputs = try YAMLDecoder().decode([String: String].self, from: string)
-            } catch {
-                printError(error.localizedDescription)
+            default:
+                printError("Cannot read valid input file at \(inputPath.path)")
                 return
             }
+        } catch {
+            printError(error.localizedDescription)
+            return
         }
     } else {
         for variable in template.manifest.variables ?? [] {
@@ -136,100 +134,120 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     }
 
     // Process template.
+
+    // Copy template directory.
+    if verbose {
+        printVerbose("Copy \(template.templateFilesPath.path) into \(outputPath.path)")
+    }
     do {
-        // Copy template directory.
-        if verbose {
-            printVerbose("Copy \(template.path.path) into \(outputPath.path)")
-        }
         try template.templateFilesPath.copy(to: outputPath)
+    } catch {
+        printError(error.localizedDescription)
+        return
+    }
 
-        // Prehook.
-        if verbose {
-            printVerbose("Execute prehooks")
-        }
-        for prehook in template.manifest.prehooks ?? [] {
-            let scriptPath = template.prehookScriptsPath[prehook]
-            if scriptPath.exists {
-                let work = Work(command: "sh \(scriptPath.path)",
-                    standardOutputHandler: { standardOutput in
-                        print(standardOutput)
-                    }, standardErrorHandler: { standardError in
-                        print(standardError)
-                    }
-                )
-                var environment = ProcessInfo.processInfo.environment
-                environment["FLINT_OUTPUT_PATH"] = outputPath.path
-                for (key, input) in inputs {
-                    environment["FLINT_\(key)"] = input
+    // Prehooks.
+    if verbose {
+        printVerbose("Execute prehooks")
+    }
+    for prehook in template.manifest.prehooks ?? [] {
+        let scriptPath = template.prehookScriptsPath[prehook]
+        if scriptPath.exists {
+            let work = Work(command: "sh \(scriptPath.path)",
+                standardOutputHandler: { standardOutput in
+                    print(standardOutput)
+                }, standardErrorHandler: { standardError in
+                    print(standardError)
                 }
-                work.task.environment = environment
-                work.start()
+            )
+            var environment = ProcessInfo.processInfo.environment
+            environment["FLINT_OUTPUT_PATH"] = outputPath.path
+            for (key, input) in inputs {
+                environment["FLINT_\(key)"] = input
             }
+            work.task.environment = environment
+            work.start()
+        } else {
+            printWarning("Cannot find prehook script \(prehook)")
         }
+    }
 
-        // Process variables.
-        if verbose {
-            printVerbose("Process variables \(outputPath.path)")
-        }
+    // Process variables.
+    if verbose {
+        printVerbose("Process variables \(outputPath.path)")
+    }
 
-        var directoryPaths: [Path] = []
+    var directoryPaths: [Path] = []
 
+    do {
         for content in try outputPath.enumerated() {
             if content.isDirectory {
                 directoryPaths.append(content)
             } else {
+                if verbose {
+                    printVerbose("Process \(content.path)")
+                }
                 let processedName = process(content.rawValue.lastPathComponent,
                                             variables: template.manifest.variables ?? [],
                                             inputs: inputs)
+
                 var encoding = String.Encoding.utf8
                 if let dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
                     let processedString = process(dataString,
                                                   variables: template.manifest.variables ?? [],
                                                   inputs: inputs)
-                    try? content.remove()
-                    try? processedString.write(to: content.parent[processedName].rawValue,
-                                          atomically: true,
-                                          encoding: encoding)
+                    try content.remove()
+                    try processedString.write(to: content.parent[processedName].rawValue,
+                                              atomically: true,
+                                              encoding: encoding)
                 } else {
-                    try? content.move(to: content.parent[processedName])
+                    if verbose {
+                        printVerbose("Process \(content.path)")
+                    }
+                    try content.move(to: content.parent[processedName])
                 }
             }
         }
 
-        for directoryPath in directoryPaths {
+        for directoryPath in directoryPaths.reversed() {
+            if verbose {
+                printVerbose("Process \(directoryPath.path)")
+            }
             let processedName = process(directoryPath.rawValue.lastPathComponent,
                                         variables: template.manifest.variables ?? [],
                                         inputs: inputs)
-            try? directoryPath.move(to: directoryPath.parent[processedName])
+            try directoryPath.move(to: directoryPath.parent[processedName])
         }
-
-        // Posthook.
-        if verbose {
-            printVerbose("Execute posthooks")
-        }
-        for posthook in template.manifest.posthooks ?? [] {
-            let scriptPath = template.posthookScriptsPath[posthook]
-            if scriptPath.exists {
-                let work = Work(command: "sh \(scriptPath.path)",
-                    standardOutputHandler: { standardOutput in
-                        print(standardOutput)
-                    }, standardErrorHandler: { standardError in
-                        print(standardError)
-                    }
-                )
-                var environment = ProcessInfo.processInfo.environment
-                environment["FLINT_OUTPUT_PATH"] = outputPath.path
-                for (key, input) in inputs {
-                    environment["FLINT_\(key)"] = input
-                }
-                work.task.environment = environment
-                work.start()
-            }
-        }
-
-        print("✓".color(.green) + " Done")
     } catch {
         printError(error.localizedDescription)
         return
     }
+
+    // Posthooks.
+    if verbose {
+        printVerbose("Execute posthooks")
+    }
+    for posthook in template.manifest.posthooks ?? [] {
+        let scriptPath = template.posthookScriptsPath[posthook]
+        if scriptPath.exists {
+            let work = Work(command: "sh \(scriptPath.path)",
+                standardOutputHandler: { standardOutput in
+                    print(standardOutput)
+                }, standardErrorHandler: { standardError in
+                    print(standardError)
+                }
+            )
+            var environment = ProcessInfo.processInfo.environment
+            environment["FLINT_OUTPUT_PATH"] = outputPath.path
+            for (key, input) in inputs {
+                environment["FLINT_\(key)"] = input
+            }
+            work.task.environment = environment
+            work.start()
+        } else {
+            printWarning("Cannot find posthook script \(posthook)")
+        }
+    }
+
+    print("✓".color(.green) + " Done")
 }
