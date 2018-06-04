@@ -6,7 +6,7 @@
   <a href="https://github.com/flintbox/Flint/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license" /></a>
 </h1>
 
-*Straightforward template engine. **Never write same code again**.*
+***Never write same code again.***
 
 **Table of Contents**
 - [Installation](#installation)
@@ -30,7 +30,7 @@
 
 ### Template Directory Structure
 
-```shell
+```
 Template
 └╴template.json
 └╴template
@@ -40,7 +40,7 @@ Template
 
 ### template.json
 
-Template manifest file. YAML format is also supported.
+Template manifest file. YAML is also supported.
 
 ```json
 {
@@ -48,9 +48,6 @@ Template manifest file. YAML format is also supported.
   "variables": [
     {
       "name": "Author"
-    },
-    {
-      "name": "Module Name"
     },
     {
       "name": "Module Name",
@@ -79,11 +76,11 @@ Variable used in template. Each item has `name` and optional `defaultValue`. Thi
 
 #### `prehooks`
 
-Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_TEMPLATE_HOME` and `FLINT_ + each variable name` environment variable. This field is optional.
+Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
 
 #### `posthooks`
 
-Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_TEMPLATE_HOME` and `FLINT_ + each variable name` environment variable. This field is optional.
+Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
 
 ### template
 
