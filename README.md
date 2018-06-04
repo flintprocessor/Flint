@@ -24,6 +24,12 @@
 
 ## Installation
 
+### [Mint](https://github.com/yonaskolb/Mint)
+
+```shell
+mint install flintbox/Flint
+```
+
 ### Make
 
 ### install
