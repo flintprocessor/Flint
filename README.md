@@ -12,7 +12,7 @@
 **Table of Contents**
 - [Installation](#installation)
 - [Create Template](#create-template)
-- [Environment Variable](#environment-Variable)
+- [Environment Variable](#environment-variable)
 - [Command](#command)
   - [Template](#template)
     - [Add](#add)
@@ -35,7 +35,7 @@ mint install flintbox/Flint
 
 ### Make
 
-### install
+#### Install
 
 ```shell
 git clone https://github.com/flintbox/Flint
@@ -43,7 +43,7 @@ cd Flint
 make
 ```
 
-### uninstall
+#### Uninstall
 
 ```shell
 make uninstall
@@ -89,19 +89,19 @@ Template manifest file. YAML is also supported.
 }
 ```
 
-#### `description`
+`description`
 
 Template description. This field is optional.
 
-#### `variables`
+`variables`
 
 Variable used in template. Each item has `name` and optional `defaultValue`. This field is optional.
 
-#### `prehooks`
+`prehooks`
 
 Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
 
-#### `posthooks`
+`posthooks`
 
 Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
 
@@ -154,21 +154,21 @@ flint t a <path-to-template> [<template-name>] [--force | -f] [--verbose | -v]
 
 ##### Argument
 
-###### `<path-to-template>`
+`<path-to-template>`
 
 Path to template.
 
-###### `[<template-name>]`
+`[<template-name>]`
 
 Template name. This is sub path relative to template home. If not present, the value will be the last path component of path to template.
 
 ##### Option
 
-###### `[--force | -f]`
+`[--force | -f]`
 
 Override existing template under template home.
 
-###### `[--verbose | -v]`
+`[--verbose | -v]`
 
 Output more information.
 
@@ -190,25 +190,25 @@ flint t c <repository-url> [<template-name>] [--branch | -b <branch>] [--force |
 
 ##### Argument
 
-###### `<repository-url>`
+`<repository-url>`
 
 Repository URL to clone.
 
-###### `[<template-name>]`
+`[<template-name>]`
 
 Template name. This is sub path relative to template home. If not present, the value will be the name from repository URL.
 
 ##### Option
 
-###### `[--branch | -b <branch>]`
+`[--branch | -b <branch>]`
 
 Branch to clone.
 
-###### `[--force | -f]`
+`[--force | -f]`
 
 Override existing template under template home.
 
-###### `[--verbose | -v]`
+`[--verbose | -v]`
 
 Output more information.
 
@@ -230,7 +230,7 @@ flint t l [--verbose | -v]
 
 ##### Option
 
-###### `[--verbose | -v]`
+`[--verbose | -v]`
 
 Output more information.
 
@@ -252,13 +252,13 @@ flint t r <template-name>... [--verbose | -v]
 
 ##### Argument
 
-###### `<template-name>...`
+`<template-name>...`
 
 Templates to remove from template home.
 
 ##### Option
 
-###### `[--verbose | -v]`
+`[--verbose | -v]`
 
 Output more information.
 
@@ -280,29 +280,29 @@ flint s [<template-name>] [--template | -t <template-path>] [--output | -o <outp
 
 #### Argument
 
-##### `[<template-name>]`
+`[<template-name>]`
 
 Template from template home to use.
 
 #### Option
 
-##### `[--template | -t <template-path>]`
+`[--template | -t <template-path>]`
 
 Path for template to use. If template name argument is presented, this value will be ignored.
 
-##### `[--output | -o <output-path>]`
+`[--output | -o <output-path>]`
 
 Path to write generated project. If not presented, current path for the process will be used.
 
-##### `[--input | -i <input-file-path>]`
+`[--input | -i <input-file-path>]`
 
 Variable input file path.
 
-##### `[--force | -f]`
+`[--force | -f]`
 
 Override output path.
 
-##### `[--verbose | -v]`
+`[--verbose | -v]`
 
 Output more information.
 
@@ -324,29 +324,29 @@ flint i [<template-name>] [--template | -t <template-path>] [--output | -o <outp
 
 #### Argument
 
-##### `[<template-name>]`
+`[<template-name>]`
 
 Template from template home to use.
 
 #### Option
 
-##### `[--template | -t <template-path>]`
+`[--template | -t <template-path>]`
 
 Path for template to use. If template name argument is presented, this value will be ignored.
 
-##### `[--output | -o <output-path>]`
+`[--output | -o <output-path>]`
 
 Path to write generated file. If not presented, current path for the process will be used.
 
-##### `[--yaml | -y]`
+`[--yaml | -y]`
 
 Use YAML format. If not presented, JSON format will be used.
 
-##### `[--force | -f]`
+`[--force | -f]`
 
 Override output path.
 
-##### `[--verbose | -v]`
+`[--verbose | -v]`
 
 Output more information.
 
