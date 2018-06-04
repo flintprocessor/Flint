@@ -4,6 +4,7 @@
   <br>
   <a href="https://github.com/flintbox/Flint/releases"><img src="https://img.shields.io/github/release/flintbox/Flint.svg" alt="GitHub release" /></a>
   <a href="https://github.com/flintbox/Flint/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license" /></a>
+  <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/%F0%9F%8C%B1-Mint-brightgreen.svg" alt="Mint" /></a>
 </h1>
 
 ***Never write same code again.***
