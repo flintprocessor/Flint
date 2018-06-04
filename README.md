@@ -24,7 +24,21 @@
 
 ## Installation
 
+### Make
 
+### install
+
+```shell
+git clone https://github.com/flintbox/Flint
+cd Flint
+make
+```
+
+### uninstall
+
+```shell
+make uninstall
+```
 
 ## Create Template
 
