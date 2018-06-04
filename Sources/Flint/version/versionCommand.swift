@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  versionCommand.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,23 +26,14 @@
 import Foundation
 import Bouncer
 
-let program = Program(
-    commands: [
-        templateCloneCommand,
-        templateCloneCommandAlias,
-        templateAddCommand,
-        templateAddCommandAlias,
-        templateListCommand,
-        templateListCommandAlias,
-        templateRemoveCommand,
-        templateRemoveCommandAlias,
-        sparkCommand,
-        sparkCommandAlias,
-        inputCommand,
-        inputCommandAlias,
-        versionCommand,
-        versionCommandAlias
-    ]
-)
+/// Version command.
+/// `flint version`
+let versionCommand = Command(name: ["version"],
+                             operandType: .none,
+                             handler: versionCommandHandler)
 
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+/// Version command alias.
+/// `flint v`
+let versionCommandAlias = Command(name: ["v"],
+                                  operandType: .none,
+                                  handler: versionCommandHandler)

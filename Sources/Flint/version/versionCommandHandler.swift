@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  versionCommandHandler.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,23 +26,7 @@
 import Foundation
 import Bouncer
 
-let program = Program(
-    commands: [
-        templateCloneCommand,
-        templateCloneCommandAlias,
-        templateAddCommand,
-        templateAddCommandAlias,
-        templateListCommand,
-        templateListCommandAlias,
-        templateRemoveCommand,
-        templateRemoveCommandAlias,
-        sparkCommand,
-        sparkCommandAlias,
-        inputCommand,
-        inputCommandAlias,
-        versionCommand,
-        versionCommandAlias
-    ]
-)
-
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+/// Version command handler.
+let versionCommandHandler: CommandHandler = { _, _, _, _ in
+    print(version)
+}

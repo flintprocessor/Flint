@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  version.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -24,25 +24,5 @@
 //
 
 import Foundation
-import Bouncer
 
-let program = Program(
-    commands: [
-        templateCloneCommand,
-        templateCloneCommandAlias,
-        templateAddCommand,
-        templateAddCommandAlias,
-        templateListCommand,
-        templateListCommandAlias,
-        templateRemoveCommand,
-        templateRemoveCommandAlias,
-        sparkCommand,
-        sparkCommandAlias,
-        inputCommand,
-        inputCommandAlias,
-        versionCommand,
-        versionCommandAlias
-    ]
-)
-
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+let version = "0.1.0"

@@ -21,6 +21,7 @@
     - [Remove](#remove)
   - [Spark](#spark)
   - [Input](#input)
+  - [Version](#version)
 - [Contribute](#contribute)
 
 ## Installation
@@ -347,6 +348,22 @@ Override output path.
 ##### `[--verbose | -v]`
 
 Output more information.
+
+### Version
+
+Print binary version.
+
+#### Command
+
+```shell
+flint version
+```
+
+or
+
+```shell
+flint v
+```
 
 ## Contribute
 
