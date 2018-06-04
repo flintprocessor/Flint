@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  helpCommand.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,25 +26,14 @@
 import Foundation
 import Bouncer
 
-let program = Program(
-    commands: [
-        templateCloneCommand,
-        templateCloneCommandAlias,
-        templateAddCommand,
-        templateAddCommandAlias,
-        templateListCommand,
-        templateListCommandAlias,
-        templateRemoveCommand,
-        templateRemoveCommandAlias,
-        sparkCommand,
-        sparkCommandAlias,
-        inputCommand,
-        inputCommandAlias,
-        versionCommand,
-        versionCommandAlias,
-        helpCommand,
-        helpCommandAlias
-    ]
-)
+/// Help command.
+/// `flint help`
+let helpCommand = Command(name: ["help"],
+                          operandType: .none,
+                          handler: helpCommandHandler)
 
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+/// Help command alias.
+/// `flint h`
+let helpCommandAlias = Command(name: ["h"],
+                               operandType: .none,
+                               handler: helpCommandHandler)

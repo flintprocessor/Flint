@@ -22,6 +22,7 @@
   - [Spark](#spark)
   - [Input](#input)
   - [Version](#version)
+  - [Help](#help)
 - [Contribute](#contribute)
 
 ## Installation
@@ -363,6 +364,22 @@ or
 
 ```shell
 flint v
+```
+
+### Help
+
+Print available command list.
+
+#### Command
+
+```shell
+flint help
+```
+
+or
+
+```shell
+flint h
 ```
 
 ## Contribute
