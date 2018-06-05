@@ -4,11 +4,11 @@ RELEASE_BIN_BUILD_PATH = ./.build/release/
 DEBUG_BIN_BUILD_PATH = ./.build/debug/
 
 .PHONY: all release debug build-release build-debug
-	install-release install-debug uninstall sync-version git-reset
+	install-release install-debug uninstall sync-version
 
-all: release install-release git-reset
+all: release install-release
 
-release: sync-version build-release
+release: build-release
 debug: build-debug install-debug
 
 # Build
@@ -27,5 +27,3 @@ uninstall:
 
 sync-version:
 	swift Scripts/SyncVersion.swift
-git-reset:
-	git reset --hard
