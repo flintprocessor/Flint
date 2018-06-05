@@ -47,4 +47,25 @@ let program = Program(
     ]
 )
 
-try? program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+do {
+    try program.run(withArguments: Array(CommandLine.arguments.dropFirst()))
+} catch let error as CommandParsingError {
+    switch error {
+    case .commandNotFound:
+        print("Cannot find command")
+    }
+} catch let error as OperandParsingError {
+    switch error {
+    case .invalidNumberOfOperands(_, _, _):
+        print("Invalid number of operands")
+    }
+} catch let error as OptionParsingError {
+    switch error {
+    case .missingOptionArgument(_, let option):
+        print("Missing option argument for \(option.name)")
+    case .missingOptions(_, let options):
+        print("Missing options \(options.map { $0.name })")
+    }
+} catch {
+    print(error.localizedDescription)
+}
