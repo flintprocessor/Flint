@@ -25,4 +25,4 @@
 
 import Foundation
 
-let version = "develop"
+let version = "0.1.0"
