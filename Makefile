@@ -13,9 +13,9 @@ debug: build-debug install-debug
 
 # Build
 build-release:
-	swift build -c release -Xswiftc -static-stdlib
+	swift build -c release -Xswiftc -static-stdlib --disable-sandbox
 build-debug:
-	swift build -c debug -Xswiftc -static-stdlib
+	swift build -c debug -Xswiftc -static-stdlib --disable-sandbox
 
 # Install
 install-release:
