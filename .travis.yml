@@ -1,14 +1,5 @@
 language: objective-c
 osx_image: xcode9.3
+
 script:
 - make release
-before_deploy:
-- sh Scripts/create_tag.sh
-deploy:
-  provider: releases
-  api_key:
-    secure: vuw7o6QyCEo1M/V3IexPyRE20hkUO90SrwqHe5rI6+6RR3X9PIrqRYfo9sWmwtU0uv8dK6nqwPLXzkcF4/xHFXa8rGt+0HTd15+qtBwE+zSx/IfG7MXf2acIuPszXJwv6y6kyp5c4PB1euJsu2541ISW8TOtNO68VSXTBdzyxyA8w5c96Sg71XFHM5lPkg/Fnqw/JhcbUAG1/ICgxncWhvoY9qDJ2bE+oL7hIXvdZAK5lGu1F2zLVeKzaVkmFv8Wkcai1VIMMpKE7JJciC0KrmL2beE9QgzUUVk40DqOYZR8PJqpH3L9q74lBqqN8aIMlVThfABDRaliD+NTSvU5kIBlxfKsrbwCgohUmX89Z3zqJZmxSujy1jTCsTH7FCcZy9NdqYYOehtOEogGaa282cp9FjTEv6bfac27ZzH/AS6QWRUPr0qLbBfDgL/3379yjUctasfSoKozb2OI4xVaHNLQT6zVAx6Ha69mx396eX2Udld0Iw6He+uaEPLmzjT9pwN5DhtkBnfxAMidRBTRUE+6uLIzkNja8jjsMtmFI0bU5dE3mvUlL31ojo+mJuVKgflkGlitriAyJpuS5Y9X2bRBG7SrMINkQ5I6rNS3F00gydFt0nTywJdyAPezLD0L9QtGBpo6WWy7V/o1VEX+TCgp6oMleEHXyzx2yIBJTFA=
-  file: ".build/release/flint"
-  skip_cleanup: true
-  on:
-    branch: master
