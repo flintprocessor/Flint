@@ -1,0 +1,61 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ANSIEscapeCode",
+        "repositoryURL": "https://github.com/flintbox/ANSIEscapeCode",
+        "state": {
+          "branch": null,
+          "revision": "892f5f3067ea4c029af05cb45efb3b6a3be2f838",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "Bouncer",
+        "repositoryURL": "https://github.com/flintbox/Bouncer",
+        "state": {
+          "branch": null,
+          "revision": "a24a3d616b78ed4a7756edc4999c515f3adfd0dd",
+          "version": "0.1.2"
+        }
+      },
+      {
+        "package": "Motor",
+        "repositoryURL": "https://github.com/flintbox/Motor",
+        "state": {
+          "branch": null,
+          "revision": "8a203ff30aa38ab376a8da4390eb1c3d6519054b",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "PathFinder",
+        "repositoryURL": "https://github.com/jasonnam/PathFinder",
+        "state": {
+          "branch": "develop",
+          "revision": "cac8c10d26da0a77b1d3775c167b77e331bc847b",
+          "version": null
+        }
+      },
+      {
+        "package": "Work",
+        "repositoryURL": "https://github.com/flintbox/Work",
+        "state": {
+          "branch": null,
+          "revision": "dcfc835ade72e4de743b6a14d3f224ebf575eac5",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "618582e09699b577fa183bab7d88e3ee7d9a1d19",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
