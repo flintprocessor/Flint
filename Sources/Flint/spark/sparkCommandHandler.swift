@@ -80,7 +80,13 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     if let outputPathOptionValue = outputPathOptionValue {
         outputPath = Path(fileURLWithPath: outputPathOptionValue)
     } else {
-        outputPath = Path(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        print("Output Path [--output | -o]: ", terminator: "")
+        if let outputPathInput = readLine(), outputPathInput.count > 0 {
+            outputPath = Path(fileURLWithPath: FileManager.default.currentDirectoryPath)[outputPathInput]
+        } else {
+            printError("Output path not specified")
+            return
+        }
     }
 
     // Check if output path is valid.
@@ -140,6 +146,9 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         printVerbose("Copy \(template.templateFilesPath.path) into \(outputPath.path)")
     }
     do {
+        if !outputPath.parent.exists {
+            try outputPath.parent.createDirectory()
+        }
         try template.templateFilesPath.copy(to: outputPath)
     } catch {
         printError(error.localizedDescription)
