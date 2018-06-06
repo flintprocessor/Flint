@@ -6,6 +6,7 @@
   <a href="https://github.com/flintbox/Flint/releases"><img src="https://img.shields.io/github/release/flintbox/Flint.svg" alt="GitHub release" /></a>
   <a href="https://github.com/flintbox/Flint/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license" /></a>
   <a href="https://swift.org/package-manager"><img src="https://img.shields.io/badge/Swift%20PM-compatible-orange.svg" alt="Swift Package Manager" /></a>
+  <a href="https://brew.sh"><img src="https://img.shields.io/badge/%F0%9F%8D%BA-Homebrew-yellow.svg" alt="Homebrew" /></a>
   <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/%F0%9F%8C%B1-Mint-brightgreen.svg" alt="Mint" /></a>
 </h1>
 
@@ -28,6 +29,13 @@
 - [Contribute](#contribute)
 
 ## Installation
+
+### [Homebrew](https://brew.sh)
+
+```shell
+brew tap flintbox/Flint
+brew install flint
+```
 
 ### [Mint](https://github.com/yonaskolb/Mint)
 
