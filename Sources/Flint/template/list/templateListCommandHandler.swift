@@ -63,7 +63,7 @@ let templateListCommandHandler: CommandHandler = { _, _, operandValues, optionVa
             if verbose {
                 templateName = content.path
             } else {
-                templateName = String(content.relativePath)
+                templateName = String(content.path.dropFirst(templateHomePath.path.count + 1))
             }
 
             let output: String

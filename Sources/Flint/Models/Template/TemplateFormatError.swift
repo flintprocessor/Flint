@@ -31,11 +31,15 @@ import PathFinder
 /// - manifestFileNotExists: Manifest file not exists.
 enum TemplateFormatError: Error {
     case manifestFileNotExists(Path)
+}
 
-    var localizedDescription: String {
+// MARK: - LocalizedError
+extension TemplateFormatError: LocalizedError {
+
+    var errorDescription: String? {
         switch self {
         case .manifestFileNotExists(let path):
-            return "Manifest file not exists under \(path.path)"
+            return "Cannot find template manifest file under \(path.path)"
         }
     }
 }
