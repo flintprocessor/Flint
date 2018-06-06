@@ -57,8 +57,8 @@ struct Template {
         }
         // Set paths.
         templateFilesPath = path["template"]
-        prehookScriptsPath = path["prehook"]
-        posthookScriptsPath = path["posthook"]
+        prehookScriptsPath = path["prehooks"]
+        posthookScriptsPath = path["posthooks"]
         self.path = path
     }
 }

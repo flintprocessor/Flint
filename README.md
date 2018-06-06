@@ -67,8 +67,8 @@ make uninstall
 Template
 └╴template.json
 └╴template
-└╴prehook
-└╴posthook
+└╴prehooks
+└╴posthooks
 ```
 
 ### template.json
@@ -125,11 +125,11 @@ Actual template files to be copied. Name of file and folder or content of file c
 - `--VARIABLE_NAME--`
 - `{{VARIABLE_NAME}}`
 
-### prehook
+### prehooks
 
 Prehook scripts.
 
-### posthook
+### posthooks
 
 Posthook scripts.
 
