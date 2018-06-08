@@ -162,7 +162,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     for prehook in template.manifest.prehooks ?? [] {
         let scriptPath = template.prehookScriptsPath[prehook]
         if scriptPath.exists {
-            let work = Work(command: "sh \(scriptPath.path)",
+            let work = Work(command: "sh \"\(scriptPath.path)\"",
                 standardOutputHandler: { standardOutput in
                     print(standardOutput)
                 }, standardErrorHandler: { standardError in
@@ -239,7 +239,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     for posthook in template.manifest.posthooks ?? [] {
         let scriptPath = template.posthookScriptsPath[posthook]
         if scriptPath.exists {
-            let work = Work(command: "sh \(scriptPath.path)",
+            let work = Work(command: "sh \"\(scriptPath.path)\"",
                 standardOutputHandler: { standardOutput in
                     print(standardOutput)
                 }, standardErrorHandler: { standardError in
