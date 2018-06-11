@@ -91,6 +91,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
 
     // Get inputs.
     var inputs: [String: String] = [:]
+
     if let inputFilePathOptionValue = inputFilePathOptionValue {
         let inputPath = Path(fileURLWithPath: inputFilePathOptionValue)
         do {
@@ -109,18 +110,18 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             printError(error.localizedDescription)
             return
         }
-    } else {
-        for variable in template.manifest.variables ?? [] {
-            var output = variable.name.boldOutput
-            if let defaultValue = variable.defaultValue {
-                output += " (\(defaultValue))"
-            }
-            print("\(output): ", terminator: "")
-            if let input = readLine(), input.count > 0 {
-                inputs[variable.name] = input
-            } else {
-                inputs[variable.name] = variable.defaultValue
-            }
+    }
+
+    for variable in (template.manifest.variables ?? []).filter({ !inputs.keys.contains($0.name) }) {
+        var output = variable.name.boldOutput
+        if let defaultValue = variable.defaultValue {
+            output += " (\(defaultValue))"
+        }
+        print("\(output): ", terminator: "")
+        if let input = readLine(), input.count > 0 {
+            inputs[variable.name] = input
+        } else {
+            inputs[variable.name] = variable.defaultValue
         }
     }
 
