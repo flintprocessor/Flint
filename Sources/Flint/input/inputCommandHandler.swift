@@ -129,11 +129,7 @@ let inputCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     } else {
         var output = "{\n"
         for variable in template.manifest.variables ?? [] {
-            if let defaultValue = variable.defaultValue {
-                output.append("  \"\(variable.name)\": \"\(defaultValue)\",\n")
-            } else {
-                output.append("  \"\(variable.name)\":,\n")
-            }
+            output.append("  \"\(variable.name)\": \"\(variable.defaultValue ?? "")\",\n")
         }
         output.append("}\n")
         do {

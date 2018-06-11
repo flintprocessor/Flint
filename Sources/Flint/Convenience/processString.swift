@@ -35,7 +35,7 @@ import Foundation
 func process(_ string: String, variables: [Variable], inputs: [String: String]) -> String {
     var string = string
     for variable in variables {
-        guard let value = inputs[variable.name] ?? variable.defaultValue else { continue }
+        let value = inputs[variable.name] ?? ""
         string = string.replacingOccurrences(of: "___\(variable.name)___", with: value)
         string = string.replacingOccurrences(of: "__\(variable.name)__", with: value)
         string = string.replacingOccurrences(of: "--\(variable.name)--", with: value)
