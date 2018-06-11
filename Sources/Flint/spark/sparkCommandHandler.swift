@@ -89,21 +89,6 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         }
     }
 
-    // Check if output path is valid.
-    if outputPath.exists {
-        if force {
-            do {
-                try outputPath.remove()
-            } catch {
-                printError(error.localizedDescription)
-                return
-            }
-        } else {
-            printWarning("\(outputPath.path) is not empty")
-            return
-        }
-    }
-
     // Get inputs.
     var inputs: [String: String] = [:]
     if let inputFilePathOptionValue = inputFilePathOptionValue {
@@ -141,20 +126,6 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
 
     // Process template.
 
-    // Copy template directory.
-    if verbose {
-        printVerbose("Copy \(template.templateFilesPath.path) into \(outputPath.path)")
-    }
-    do {
-        if !outputPath.parent.exists {
-            try outputPath.parent.createDirectory()
-        }
-        try template.templateFilesPath.copy(to: outputPath)
-    } catch {
-        printError(error.localizedDescription)
-        return
-    }
-
     // Prehooks.
     if verbose {
         printVerbose("Execute prehooks")
@@ -186,46 +157,67 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         printVerbose("Process variables \(outputPath.path)")
     }
 
-    var directoryPaths: [Path] = []
-
     do {
-        for content in try outputPath.enumerated() {
+        let templateFilesPath = template.templateFilesPath
+        enumerationLoop: for content in try templateFilesPath.enumerated() {
             if content.isDirectory {
-                directoryPaths.append(content)
-            } else {
-                if verbose {
-                    printVerbose("Process \(content.path)")
-                }
-                let processedName = process(content.rawValue.lastPathComponent,
-                                            variables: template.manifest.variables ?? [],
-                                            inputs: inputs)
-
-                var encoding = String.Encoding.utf8
-                if let dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
-                    let processedString = process(dataString,
-                                                  variables: template.manifest.variables ?? [],
-                                                  inputs: inputs)
-                    try content.remove()
-                    try processedString.write(to: content.parent[processedName].rawValue,
-                                              atomically: true,
-                                              encoding: encoding)
-                } else {
-                    if verbose {
-                        printVerbose("Process \(content.path)")
-                    }
-                    try content.move(to: content.parent[processedName])
-                }
+                continue
             }
-        }
 
-        for directoryPath in directoryPaths.reversed() {
+            let relativeRawPath = String(content.path.dropFirst(templateFilesPath.path.count + 1))
+
             if verbose {
-                printVerbose("Process \(directoryPath.path)")
+                printVerbose("Process \(relativeRawPath)")
             }
-            let processedName = process(directoryPath.rawValue.lastPathComponent,
-                                        variables: template.manifest.variables ?? [],
-                                        inputs: inputs)
-            try directoryPath.move(to: directoryPath.parent[processedName])
+
+            let relativePath = process(relativeRawPath,
+                                       variables: template.manifest.variables ?? [],
+                                       inputs: inputs)
+
+            let contentOutputPath = outputPath[relativePath]
+
+            // Check existing file
+            if contentOutputPath.exists {
+                if force {
+                    try contentOutputPath.remove()
+                } else {
+                    print("File already exists at \(contentOutputPath.path)")
+                    inputLoop: repeat {
+                        print("override(o), skip(s), abort(a): ", terminator: "")
+                        if let option = readLine() {
+                            switch option {
+                            case "override", "o":
+                                try contentOutputPath.remove()
+                                break inputLoop
+                            case "skip", "s":
+                                continue enumerationLoop
+                            case "abort", "a":
+                                return
+                            default:
+                                continue inputLoop
+                            }
+                        } else {
+                            continue inputLoop
+                        }
+                    } while true
+                }
+            }
+
+            if !contentOutputPath.parent.exists {
+                try contentOutputPath.parent.createDirectory()
+            }
+
+            var encoding = String.Encoding.utf8
+            if let dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
+                let processedString = process(dataString,
+                                              variables: template.manifest.variables ?? [],
+                                              inputs: inputs)
+                try processedString.write(toFile: contentOutputPath.path,
+                                          atomically: true,
+                                          encoding: encoding)
+            } else {
+                try content.copy(to: contentOutputPath)
+            }
         }
     } catch {
         printError(error.localizedDescription)
