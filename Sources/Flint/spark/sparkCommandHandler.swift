@@ -124,8 +124,6 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         }
     }
 
-    // Process template.
-
     // Prehooks.
     if verbose {
         printVerbose("Execute prehooks")
@@ -153,10 +151,6 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     }
 
     // Process variables.
-    if verbose {
-        printVerbose("Process variables \(outputPath.path)")
-    }
-
     do {
         let templateFilesPath = template.templateFilesPath
         enumerationLoop: for content in try templateFilesPath.enumerated() {
