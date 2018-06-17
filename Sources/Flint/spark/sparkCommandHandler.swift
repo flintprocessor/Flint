@@ -155,10 +155,6 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     do {
         let templateFilesPath = template.templateFilesPath
         enumerationLoop: for content in try templateFilesPath.enumerated() {
-            if content.isDirectory {
-                continue
-            }
-
             let relativeRawPath = String(content.path.dropFirst(templateFilesPath.path.count + 1))
 
             if verbose {
@@ -202,16 +198,20 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
                 try contentOutputPath.parent.createDirectory()
             }
 
-            var encoding = String.Encoding.utf8
-            if let dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
-                let processedString = process(dataString,
-                                              variables: template.manifest.variables ?? [],
-                                              inputs: inputs)
-                try processedString.write(toFile: contentOutputPath.path,
-                                          atomically: true,
-                                          encoding: encoding)
+            if content.isDirectory {
+                try contentOutputPath.createDirectory()
             } else {
-                try content.copy(to: contentOutputPath)
+                var encoding = String.Encoding.utf8
+                if let dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
+                    let processedString = process(dataString,
+                                                  variables: template.manifest.variables ?? [],
+                                                  inputs: inputs)
+                    try processedString.write(toFile: contentOutputPath.path,
+                                              atomically: true,
+                                              encoding: encoding)
+                } else {
+                    try content.copy(to: contentOutputPath)
+                }
             }
         }
     } catch {
