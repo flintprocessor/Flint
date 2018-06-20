@@ -104,10 +104,18 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             switch inputPath.rawValue.pathExtension {
             case "json":
                 let data = try Data(contentsOf: inputPath.rawValue)
-                inputs = try JSONDecoder().decode([String: String].self, from: data)
+                for (key, value) in try JSONDecoder().decode([String: String].self, from: data) {
+                    if (template.manifest.variables ?? []).map({ $0.name }).contains(key) {
+                        inputs[key] = value
+                    }
+                }
             case "yaml", "yml":
                 let string = try String(contentsOf: inputPath.rawValue)
-                inputs = try YAMLDecoder().decode([String: String].self, from: string)
+                for (key, value) in try YAMLDecoder().decode([String: String].self, from: string) {
+                    if (template.manifest.variables ?? []).map({ $0.name }).contains(key) {
+                        inputs[key] = value
+                    }
+                }
             default:
                 printError("Cannot read valid input file at \(inputPath.path)")
                 return
@@ -124,7 +132,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             output += " (\(defaultValue))"
         }
         print("\(output): ", terminator: "")
-        if let input = readLine(), input.count > 0 {
+        if let input = readLine() {
             inputs[variable.name] = input
         } else {
             inputs[variable.name] = variable.defaultValue
@@ -148,7 +156,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             var environment = ProcessInfo.processInfo.environment
             environment["FLINT_OUTPUT_PATH"] = outputPath.path
             for (key, input) in inputs {
-                environment["FLINT_\(key)"] = input
+                environment["FLINT_\(key.replacingOccurrences(of: " ", with: "_"))"] = input
             }
             work.task.environment = environment
             work.start()
@@ -236,7 +244,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             var environment = ProcessInfo.processInfo.environment
             environment["FLINT_OUTPUT_PATH"] = outputPath.path
             for (key, input) in inputs {
-                environment["FLINT_\(key)"] = input
+                environment["FLINT_\(key.replacingOccurrences(of: " ", with: "_"))"] = input
             }
             work.task.environment = environment
             work.start()
