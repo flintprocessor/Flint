@@ -67,6 +67,7 @@ make uninstall
 Template
 └╴template.json
 └╴template
+└╴include
 └╴prehooks
 └╴posthooks
 ```
@@ -114,6 +115,23 @@ Prehook scripts. These scripts will be executed in sequence before the variables
 `posthooks`
 
 Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
+
+### Include Files
+
+You can include other files under `include/` on template files or directory names with following variables.
+
+```
+__INCLUDE:PATH TO FILE__
+___INCLUDE:PATH TO FILE___
+--INCLUDE:PATH TO FILE--
+{{INCLUDE:PATH TO FILE}}
+```
+
+For example, read file `include/license/MIT` and replace variable with the content.
+
+```
+{{INCLUDE:license/MIT}}
+```
 
 ### Date Variables
 
