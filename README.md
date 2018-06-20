@@ -116,7 +116,33 @@ Prehook scripts. These scripts will be executed in sequence before the variables
 
 Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_+EACH_VARIABLE_NAME (Whitespaces replaced with underscores.)` environment variable. This field is optional.
 
-### Include Files
+### template
+
+Actual template files to be copied. Name of file and folder or content of file can have variables.
+
+*Available variable formats*
+- `__VARIABLE_NAME__`
+- `___VARIABLE_NAME___`
+- `--VARIABLE_NAME--`
+- `{{VARIABLE_NAME}}`
+
+### include
+
+Files to be included on template files.
+
+### prehooks
+
+Prehook scripts.
+
+### posthooks
+
+Posthook scripts.
+
+### Predefined Variables
+
+Beside custom variables, several predefined variables are also available.
+
+#### Include File Variables
 
 You can include other files under `include/` on template files or directory names with following variables.
 
@@ -133,9 +159,9 @@ For example, read file `include/license/MIT` and replace variable with the conte
 {{INCLUDE:license/MIT}}
 ```
 
-### Date Variables
+#### Date Variables
 
-Beside custom variables, predefined date variables are also available. Date variable has following form and processed with Swift [`DateFormatter`](https://developer.apple.com/documentation/foundation/dateformatter).
+Date variable has following form and processed with Swift [`DateFormatter`](https://developer.apple.com/documentation/foundation/dateformatter).
 
 ```
 __DATE:LOCALE|DATE FORMAT__
@@ -150,17 +176,17 @@ ___DATE:LOCALE|DATE FORMAT___
 
 Type | Description
 ---- | -----------
-`YEAR` | Date format `yyyy`.
-`YEAR-SHORT` | Date format `yy`.
-`MONTH` | Date format `MM`.
-`MONTH-SHORT` | Date format `M`.
-`DAY` | Date format `dd`.
-`DAY-SHORT` | Date format `d`.
-`SHORT` | System short date style.
-`MEDIUM` | System medium date style.
-`LONG` | System long date style.
-`FULL` | System full date style.
-Any String Value | Any date format needed.
+`YEAR` | Date format `yyyy`
+`YEAR-SHORT` | Date format `yy`
+`MONTH` | Date format `MM`
+`MONTH-SHORT` | Date format `M`
+`DAY` | Date format `dd`
+`DAY-SHORT` | Date format `d`
+`SHORT` | System short date style
+`MEDIUM` | System medium date style
+`LONG` | System long date style
+`FULL` | System full date style
+Any String Value | Any date format needed
 
 Examples,
 
@@ -169,24 +195,6 @@ Examples,
 {{DATE:ko_KR|FULL}} // 2018년 6월 20일 수요일
 --DATE:yyyy M dd-- // 2018 6 20
 ```
-
-### template
-
-Actual template files to be copied. Name of file and folder or content of file can have variables.
-
-*Available variable formats*
-- `__VARIABLE_NAME__`
-- `___VARIABLE_NAME___`
-- `--VARIABLE_NAME--`
-- `{{VARIABLE_NAME}}`
-
-### prehooks
-
-Prehook scripts.
-
-### posthooks
-
-Posthook scripts.
 
 ## Environment Variable
 
