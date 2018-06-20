@@ -1,5 +1,5 @@
 //
-//  version.swift
+//  processCustomVariables.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -25,4 +25,18 @@
 
 import Foundation
 
-let version = "0.1.5"
+/// Process custom variables.
+///
+/// - Parameters:
+///   - string: Raw string.
+///   - variables: Possible variables.
+///   - inputs: User input for variables.
+func processCustomVariables(string: inout String, variables: [Variable], inputs: [String: String]) {
+    for variable in variables {
+        let value = inputs[variable.name] ?? ""
+        string = string.replacingOccurrences(of: "___\(variable.name)___", with: value)
+        string = string.replacingOccurrences(of: "__\(variable.name)__", with: value)
+        string = string.replacingOccurrences(of: "--\(variable.name)--", with: value)
+        string = string.replacingOccurrences(of: "{{\(variable.name)}}", with: value)
+    }
+}

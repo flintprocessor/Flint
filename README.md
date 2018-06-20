@@ -67,6 +67,7 @@ make uninstall
 Template
 └╴template.json
 └╴template
+└╴include
 └╴prehooks
 └╴posthooks
 ```
@@ -109,11 +110,65 @@ Variable used in template. Each item has `name` and optional `defaultValue`. Thi
 
 `prehooks`
 
-Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
+Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_+EACH_VARIABLE_NAME (Whitespaces replaced with underscores.)` environment variable. This field is optional.
 
 `posthooks`
 
-Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
+Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_+EACH_VARIABLE_NAME (Whitespaces replaced with underscores.)` environment variable. This field is optional.
+
+### Include Files
+
+You can include other files under `include/` on template files or directory names with following variables.
+
+```
+__INCLUDE:PATH TO FILE__
+___INCLUDE:PATH TO FILE___
+--INCLUDE:PATH TO FILE--
+{{INCLUDE:PATH TO FILE}}
+```
+
+For example, read file `include/license/MIT` and replace variable with the content.
+
+```
+{{INCLUDE:license/MIT}}
+```
+
+### Date Variables
+
+Beside custom variables, predefined date variables are also available. Date variable has following form and processed with Swift [`DateFormatter`](https://developer.apple.com/documentation/foundation/dateformatter).
+
+```
+__DATE:LOCALE|DATE FORMAT__
+___DATE:LOCALE|DATE FORMAT___
+--DATE:LOCALE|DATE FORMAT--
+{{DATE:LOCALE|DATE FORMAT}}
+```
+
+`LOCALE` is optional locale identifier.
+
+`DATE FORMAT` can be one of the following values.
+
+Type | Description
+---- | -----------
+`YEAR` | Date format `yyyy`.
+`YEAR-SHORT` | Date format `yy`.
+`MONTH` | Date format `MM`.
+`MONTH-SHORT` | Date format `M`.
+`DAY` | Date format `dd`.
+`DAY-SHORT` | Date format `d`.
+`SHORT` | System short date style.
+`MEDIUM` | System medium date style.
+`LONG` | System long date style.
+`FULL` | System full date style.
+Any String Value | Any date format needed.
+
+Examples,
+
+```swift
+{{DATE:YEAR}} // 2018
+{{DATE:ko_KR|FULL}} // 2018년 6월 20일 수요일
+--DATE:yyyy M dd-- // 2018 6 20
+```
 
 ### template
 
@@ -142,6 +197,20 @@ FLINT_TEMPLATE_HOME
 ```
 
 Set path for template home.
+
+### Preset Values
+
+```
+FLINT_+VARIABLE_NAME (Whitespaces replaced with underscores.)
+```
+
+You can preset value for template variable on environment variables. For example, if there is a variable named `Owner Name` and you set environment variables as following
+
+```shell
+FLINT_Owner_Name=Jason Nam
+```
+
+Now, value for `Owner Name` will be automatically collected and skipped on interactive `spark` command. If the same value presented on input file, value on file will override environment variable.
 
 ## Command
 

@@ -92,16 +92,30 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Get inputs.
     var inputs: [String: String] = [:]
 
+    for variable in (template.manifest.variables ?? []) {
+        if let value = Env.environment["FLINT_\(variable.name.replacingOccurrences(of: " ", with: "_"))"] {
+            inputs[variable.name] = value
+        }
+    }
+
     if let inputFilePathOptionValue = inputFilePathOptionValue {
         let inputPath = Path(fileURLWithPath: inputFilePathOptionValue)
         do {
             switch inputPath.rawValue.pathExtension {
             case "json":
                 let data = try Data(contentsOf: inputPath.rawValue)
-                inputs = try JSONDecoder().decode([String: String].self, from: data)
+                for (key, value) in try JSONDecoder().decode([String: String].self, from: data) {
+                    if (template.manifest.variables ?? []).map({ $0.name }).contains(key) {
+                        inputs[key] = value
+                    }
+                }
             case "yaml", "yml":
                 let string = try String(contentsOf: inputPath.rawValue)
-                inputs = try YAMLDecoder().decode([String: String].self, from: string)
+                for (key, value) in try YAMLDecoder().decode([String: String].self, from: string) {
+                    if (template.manifest.variables ?? []).map({ $0.name }).contains(key) {
+                        inputs[key] = value
+                    }
+                }
             default:
                 printError("Cannot read valid input file at \(inputPath.path)")
                 return
@@ -118,7 +132,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             output += " (\(defaultValue))"
         }
         print("\(output): ", terminator: "")
-        if let input = readLine(), input.count > 0 {
+        if let input = readLine() {
             inputs[variable.name] = input
         } else {
             inputs[variable.name] = variable.defaultValue
@@ -142,7 +156,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             var environment = ProcessInfo.processInfo.environment
             environment["FLINT_OUTPUT_PATH"] = outputPath.path
             for (key, input) in inputs {
-                environment["FLINT_\(key)"] = input
+                environment["FLINT_\(key.replacingOccurrences(of: " ", with: "_"))"] = input
             }
             work.task.environment = environment
             work.start()
@@ -155,15 +169,13 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     do {
         let templateFilesPath = template.templateFilesPath
         enumerationLoop: for content in try templateFilesPath.enumerated() {
-            let relativeRawPath = String(content.path.dropFirst(templateFilesPath.path.count + 1))
+            var relativePath = String(content.path.dropFirst(templateFilesPath.path.count + 1))
 
             if verbose {
-                printVerbose("Process \(relativeRawPath)")
+                printVerbose("Process \(relativePath)")
             }
 
-            let relativePath = process(relativeRawPath,
-                                       variables: template.manifest.variables ?? [],
-                                       inputs: inputs)
+            processVariables(string: &relativePath, template: template, inputs: inputs)
 
             let contentOutputPath = outputPath[relativePath]
 
@@ -202,13 +214,9 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
                 try contentOutputPath.createDirectory()
             } else {
                 var encoding = String.Encoding.utf8
-                if let dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
-                    let processedString = process(dataString,
-                                                  variables: template.manifest.variables ?? [],
-                                                  inputs: inputs)
-                    try processedString.write(toFile: contentOutputPath.path,
-                                              atomically: true,
-                                              encoding: encoding)
+                if var dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
+                    processVariables(string: &dataString, template: template, inputs: inputs)
+                    try dataString.write(toFile: contentOutputPath.path, atomically: true, encoding: encoding)
                 } else {
                     try content.copy(to: contentOutputPath)
                 }
@@ -236,7 +244,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             var environment = ProcessInfo.processInfo.environment
             environment["FLINT_OUTPUT_PATH"] = outputPath.path
             for (key, input) in inputs {
-                environment["FLINT_\(key)"] = input
+                environment["FLINT_\(key.replacingOccurrences(of: " ", with: "_"))"] = input
             }
             work.task.environment = environment
             work.start()
