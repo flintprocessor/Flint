@@ -33,6 +33,8 @@ struct Template {
     let manifest: Manifest
     /// Template files path.
     let templateFilesPath: Path
+    /// Included files path.
+    let includedFilesPath: Path
     /// Prehook scripts path.
     let prehookScriptsPath: Path
     /// Posthook scripts path.
@@ -57,6 +59,7 @@ struct Template {
         }
         // Set paths.
         templateFilesPath = path["template"]
+        includedFilesPath = path["include"]
         prehookScriptsPath = path["prehooks"]
         posthookScriptsPath = path["posthooks"]
         self.path = path
