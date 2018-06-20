@@ -77,9 +77,9 @@ func processDateVariables(string: inout String, date: Date, tagOpening: String, 
         case "MONTH-SHORT":
             dateFormatter.dateFormat = "M"
         case "DAY":
-            dateFormatter.dateFormat = "DD"
+            dateFormatter.dateFormat = "dd"
         case "DAY-SHORT":
-            dateFormatter.dateFormat = "D"
+            dateFormatter.dateFormat = "d"
         case "SHORT":
             dateFormatter.dateStyle = .short
         case "MEDIUM":
