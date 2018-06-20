@@ -92,6 +92,12 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     // Get inputs.
     var inputs: [String: String] = [:]
 
+    for variable in (template.manifest.variables ?? []) {
+        if let value = Env.environment["FLINT_\(variable.name.replacingOccurrences(of: " ", with: "_"))"] {
+            inputs[variable.name] = value
+        }
+    }
+
     if let inputFilePathOptionValue = inputFilePathOptionValue {
         let inputPath = Path(fileURLWithPath: inputFilePathOptionValue)
         do {
