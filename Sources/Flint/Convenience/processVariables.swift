@@ -31,7 +31,8 @@ import Foundation
 ///   - string: Raw string.
 ///   - variables: Possible variables.
 ///   - inputs: User input for variables.
-func processVariables(string: inout String, variables: [Variable], inputs: [String: String]) {
+func processVariables(string: inout String, template: Template, inputs: [String: String]) {
+    processIncludedFiles(string: &string, includedFilesPath: template.includedFilesPath)
     processDateVariables(string: &string)
-    processCustomVariables(string: &string, variables: variables, inputs: inputs)
+    processCustomVariables(string: &string, variables: template.manifest.variables ?? [], inputs: inputs)
 }
