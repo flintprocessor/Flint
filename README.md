@@ -110,11 +110,11 @@ Variable used in template. Each item has `name` and optional `defaultValue`. Thi
 
 `prehooks`
 
-Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
+Prehook scripts. These scripts will be executed in sequence before the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_+EACH_VARIABLE_NAME (Whitespaces replaced with underscores.)` environment variable. This field is optional.
 
 `posthooks`
 
-Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_ + each variable name` environment variable. This field is optional.
+Posthook scripts. These scripts will be executed in sequence after the variables are processed. Scripts can use `FLINT_OUTPUT_PATH` and `FLINT_+EACH_VARIABLE_NAME (Whitespaces replaced with underscores.)` environment variable. This field is optional.
 
 ### Include Files
 
@@ -197,6 +197,20 @@ FLINT_TEMPLATE_HOME
 ```
 
 Set path for template home.
+
+### Preset Values
+
+```
+FLINT_+VARIABLE_NAME (Whitespaces replaced with underscores.)
+```
+
+You can preset value for template variable on environment variables. For example, if there is a variable named `Owner Name` and you set environment variables as following
+
+```shell
+FLINT_Owner_Name=Jason Nam
+```
+
+Now, value for `Owner Name` will be automatically collected and skipped on interactive `spark` command. If the same value presented on input file, value on file will override environment variable.
 
 ## Command
 
