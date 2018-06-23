@@ -1,5 +1,5 @@
 //
-//  processVariables.swift
+//  processFileAttributes.swift
 //  Flint
 //
 //  Copyright (c) 2018 Jason Nam (https://jasonnam.com)
@@ -26,18 +26,26 @@
 import Foundation
 import PathFinder
 
-/// Process variables.
+/// Process file attributes.
 ///
 /// - Parameters:
 ///   - string: Raw string.
-///   - outputPath: Processed file output path.
-///   - template: Template.
-///   - inputs: User input for variables.
-func processVariables(string: inout String, outputPath: Path? = nil, template: Template, inputs: [String: String]) {
-    processIncludedFiles(string: &string, includedFilesPath: template.includedFilesPath)
-    if let outputPath = outputPath {
-        processFileAttributes(string: &string, outputPath: outputPath)
-    }
-    processDateVariables(string: &string)
-    processCustomVariables(string: &string, variables: template.manifest.variables ?? [], inputs: inputs)
+///   - outputPath: Output file path.
+func processFileAttributes(string: inout String, outputPath: Path) {
+    // Process file names
+    processFileNames(string: &string, fileName: outputPath.name, tagOpening: "___", tagClosing: "___")
+    processFileNames(string: &string, fileName: outputPath.name, tagOpening: "__", tagClosing: "__")
+    processFileNames(string: &string, fileName: outputPath.name, tagOpening: "--", tagClosing: "--")
+    processFileNames(string: &string, fileName: outputPath.name, tagOpening: "{{", tagClosing: "}}")
+}
+
+/// Process file names. `--FILE:NAME--`
+///
+/// - Parameters:
+///   - string: Raw string.
+///   - fileName: Output file name.
+///   - tagOpening: Tag opening.
+///   - tagClosing: Tag closing.
+func processFileNames(string: inout String, fileName: String, tagOpening: String, tagClosing: String) {
+    string = string.replacingOccurrences(of: "\(tagOpening)FILE:NAME\(tagClosing)", with: fileName)
 }

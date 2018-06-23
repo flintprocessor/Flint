@@ -142,6 +142,19 @@ Posthook scripts.
 
 Beside custom variables, several predefined variables are also available.
 
+#### File Attributes
+
+##### File Name
+
+Following variables are processed into final output file name.
+
+```
+__FILE:NAME__
+___FILE:NAME___
+--FILE:NAME--
+{{FILE:NAME}}
+```
+
 #### Include File Variables
 
 You can include other files under `include/` on template files or directory names with following variables.
