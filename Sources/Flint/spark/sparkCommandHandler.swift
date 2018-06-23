@@ -215,7 +215,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
             } else {
                 var encoding = String.Encoding.utf8
                 if var dataString = try? String(contentsOfFile: content.path, usedEncoding: &encoding) {
-                    processVariables(string: &dataString, template: template, inputs: inputs)
+                    processVariables(string: &dataString, outputPath: contentOutputPath, template: template, inputs: inputs)
                     try dataString.write(toFile: contentOutputPath.path, atomically: true, encoding: encoding)
                 } else {
                     try content.copy(to: contentOutputPath)

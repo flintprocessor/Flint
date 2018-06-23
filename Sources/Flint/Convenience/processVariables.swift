@@ -24,15 +24,20 @@
 //
 
 import Foundation
+import PathFinder
 
 /// Process variables.
 ///
 /// - Parameters:
 ///   - string: Raw string.
-///   - variables: Possible variables.
+///   - outputPath: Processed file output path.
+///   - template: Template.
 ///   - inputs: User input for variables.
-func processVariables(string: inout String, template: Template, inputs: [String: String]) {
+func processVariables(string: inout String, outputPath: Path? = nil, template: Template, inputs: [String: String]) {
     processIncludedFiles(string: &string, includedFilesPath: template.includedFilesPath)
+    if let outputPath = outputPath {
+        processFileAttributes(string: &string, outputPath: outputPath)
+    }
     processDateVariables(string: &string)
     processCustomVariables(string: &string, variables: template.manifest.variables ?? [], inputs: inputs)
 }
