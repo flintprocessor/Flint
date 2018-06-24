@@ -83,6 +83,9 @@ let templateAddCommandHandler: CommandHandler = { _, _, operandValues, optionVal
     let spinner = Spinner(pattern: Patterns.dots, delay: 2)
     spinner.start(message: "Copying...")
     do {
+        if !pathToCopyTemplate.parent.exists {
+            try pathToCopyTemplate.parent.createDirectory()
+        }
         try templatePath.copy(to: pathToCopyTemplate)
         spinner.stop(message: "✓".color(.green) + " Done")
     } catch {
