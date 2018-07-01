@@ -253,5 +253,5 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         }
     }
 
-    print("✓".color(.green) + " Project Generated")
+    print("✓".color(.green) + " Generated")
 }

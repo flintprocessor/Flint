@@ -38,7 +38,7 @@ let helpCommandHandler: CommandHandler = { _, _, _, _ in
         │ template list   │  t l  │ List available templates under template home    │
         │ template remove │  t r  │ Remove templates under template home            │
         ├─────────────────┼───────┼─────────────────────────────────────────────────┤
-        │ spark           │   s   │ Generate project from template                  │
+        │ spark           │   s   │ Generate project or files from template         │
         ├─────────────────┼───────┼─────────────────────────────────────────────────┤
         │ input           │   i   │ Generate variable input file from template      │
         ├─────────────────┼───────┼─────────────────────────────────────────────────┤
