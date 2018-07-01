@@ -81,7 +81,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         outputPath = Path(fileURLWithPath: outputPathOptionValue)
     } else {
         print("Output Path [--output | -o]: ", terminator: "")
-        if let outputPathInput = readLine(), outputPathInput.count > 0 {
+        if let outputPathInput = readLine() {
             outputPath = Path(fileURLWithPath: FileManager.default.currentDirectoryPath)[outputPathInput]
         } else {
             printError("Output path not specified")
@@ -253,5 +253,5 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
         }
     }
 
-    print("✓".color(.green) + " Project Generated")
+    print("✓".color(.green) + " Generated")
 }
