@@ -32,4 +32,6 @@ struct Variable: Codable {
     let name: String
     /// Default value.
     let defaultValue: String?
+    /// Display Name.
+    let displayName: String?
 }
