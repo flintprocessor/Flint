@@ -127,7 +127,7 @@ let sparkCommandHandler: CommandHandler = { _, _, operandValues, optionValues in
     }
 
     for variable in (template.manifest.variables ?? []).filter({ !inputs.keys.contains($0.name) }) {
-        var output = variable.name.boldOutput
+        var output = (variable.displayName ?? variable.name).boldOutput
         if let defaultValue = variable.defaultValue {
             output += " (\(defaultValue))"
         }
