@@ -4,7 +4,7 @@ RELEASE_BIN_BUILD_PATH = ./.build/release/
 DEBUG_BIN_BUILD_PATH = ./.build/debug/
 
 .PHONY: all release debug build-release build-debug
-	install-release install-debug uninstall sync-version
+	install-release install-debug uninstall sync-version xcodeproj
 
 all: release install-release
 
@@ -27,3 +27,7 @@ uninstall:
 
 sync-version:
 	swift Scripts/SyncVersion.swift
+
+# Swift Package Manager
+xcodeproj:
+	swift package generate-xcodeproj
